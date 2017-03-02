@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnContinueAsGuest = (Button) findViewById(R.id.btnContinueAsGuest);
         btnContinueAsGuest.setOnClickListener(this);
 
-        MongoClient
+
     }
 
     @Override

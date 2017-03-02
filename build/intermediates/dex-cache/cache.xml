@@ -30,47 +30,11 @@
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="1b91880255a480c203c7575dc48f41daa940c3e0">
-        <dex dex="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_d8e2dab4cb6218211252741c3af7b56f989dca2c\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.1.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="c03bf57f358aa10d253f21989e93bcf6014b3b17">
-        <dex dex="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-25.1.1_71ebf0acd63f18bf2a11a11e7c761267251ccad3\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.1.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="7bde4c34162092e0a77e7f12dc85ed77c484cf5c">
-        <dex dex="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-media-compat-25.1.1_71fefe0b2526aad5ff42194b2ec051211e0bb596\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.1.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="0d191c1a09e4892d059e5ce749e4ad4e08129e35">
-        <dex dex="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-25.1.1_696c5e15667368983055ffdf0319c0a40353f943\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="9c8b0c24ff5cec511944804c0453d72c28acf96b">
+        sha1="b93e41e8c79e96dde447e5bb8c03b5fc2630c2d2">
         <dex dex="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_b935f61b3f2113c4856e1a922fdcc0373bc0d647\classes.dex" />
     </item>
     <item
@@ -81,15 +45,6 @@
         revision="25.0.2"
         sha1="cd7951e04cfb9a8bf008d544a478d9a8d8192d38">
         <dex dex="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-25.1.1_4b850b7331575a0312a6e6da684c313bcf7ee087\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.1.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="0fb891e8f0cfba0513043a7bb357513d229ca2cd">
-        <dex dex="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-utils-25.1.1_e5e6b2fca3008e2d1952884a1f4fbb8eaf21ac1d\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -108,6 +63,51 @@
         revision="25.0.2"
         sha1="ecb496cc08dd52551fc5ec6db3bc0632e95a89bb">
         <dex dex="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-25.1.1_88bffea038700de8172997f0fa32d82216198027\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="bc4aab7d009ef076d33d6ddb519dca3505d4411f">
+        <dex dex="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_d8e2dab4cb6218211252741c3af7b56f989dca2c\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c03bf57f358aa10d253f21989e93bcf6014b3b17">
+        <dex dex="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-25.1.1_71ebf0acd63f18bf2a11a11e7c761267251ccad3\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0d191c1a09e4892d059e5ce749e4ad4e08129e35">
+        <dex dex="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-25.1.1_696c5e15667368983055ffdf0319c0a40353f943\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7bde4c34162092e0a77e7f12dc85ed77c484cf5c">
+        <dex dex="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-media-compat-25.1.1_71fefe0b2526aad5ff42194b2ec051211e0bb596\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0fb891e8f0cfba0513043a7bb357513d229ca2cd">
+        <dex dex="C:\Users\Elliot\Desktop\Third Year\PRCO304 Computing Project\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-utils-25.1.1_e5e6b2fca3008e2d1952884a1f4fbb8eaf21ac1d\classes.dex" />
     </item>
     <item
         is-multidex="true"
