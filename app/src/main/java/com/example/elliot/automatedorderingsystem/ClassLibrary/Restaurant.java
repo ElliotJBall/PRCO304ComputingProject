@@ -2,42 +2,123 @@ package com.example.elliot.automatedorderingsystem.ClassLibrary;
 
 import android.location.Location;
 
+import java.io.Serializable;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Elliot on 24/02/2017.
  */
 
-public class Restaurant {
+public class Restaurant implements Serializable {
 
     protected String restaurantId;
     protected String restaurantName;
     protected String address;
     protected String city;
-    protected String county;
+    protected String postcode;
     protected String longitude;
     protected String latitude;
-    protected Location location;
-    protected Time openingTime;
-    protected Time closingTime;
-    protected RestaurantStatus restaurantStatus;
+    protected Date openingTime;
+    protected Date closingTime;
+    protected ArrayList<Food> menu = new ArrayList<Food>();
+
+    public ArrayList<Food> getMenu() {
+        return menu;
+    }
+
+    public void setMenu(ArrayList<Food> menu) {
+        this.menu = menu;
+    }
 
     public Restaurant() {
 
     }
 
-    public Restaurant(String restaurantId, String restaurantName, String address, String city, String county, String longitude
-                      , String latitude, Location location, Time openingTime, Time closingTime , RestaurantStatus restaurantStatus) {
+    public Restaurant(String restaurantId, String restaurantName, String address, String city, String postcode, String longitude
+                      , String latitude, Date openingTime, Date closingTime, ArrayList<Food> menu) {
         this.restaurantId = restaurantId;
         this.restaurantName = restaurantName;
         this.address = address;
         this.city = city;
-        this.county = county;
+        this.postcode = postcode;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.location = location;
         this.openingTime = openingTime;
         this.closingTime = closingTime;
-        this.restaurantStatus = restaurantStatus;
+        this.menu = menu;
+    }
+
+    public String getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public Date getOpeningTime() {
+        return openingTime;
+    }
+
+    public void setOpeningTime(Time openingTime) {
+        this.openingTime = openingTime;
+    }
+
+    public Date getClosingTime() {
+        return closingTime;
+    }
+
+    public void setClosingTime(Time closingTime) {
+        this.closingTime = closingTime;
     }
 }

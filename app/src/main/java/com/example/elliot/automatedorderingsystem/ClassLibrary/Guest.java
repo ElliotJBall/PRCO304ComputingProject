@@ -25,4 +25,5 @@ public class Guest extends User {
         this.mobileNumber = mobileNumber;
         this.emailAddress = emailAddress;
     }
+
 }

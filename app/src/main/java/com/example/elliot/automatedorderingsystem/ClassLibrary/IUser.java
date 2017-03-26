@@ -8,6 +8,8 @@ import java.util.Date;
 
 public interface IUser {
 
+    String getUsername();
+    String getPassword();
     String getUserId();
     String getFirstname();
     String getLastname();
@@ -20,6 +22,8 @@ public interface IUser {
     String getMobileNumber();
     String getEmailAddress();
 
+    void setUsername(String username);
+    void setPassword(String password);
     void setUserId(String userId);
     void setFirstname(String firstname);
     void setLastname(String lastname);

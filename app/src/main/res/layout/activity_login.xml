@@ -9,6 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@android:color/white"
     tools:context="com.example.elliot.automatedorderingsystem.LoginActivity">
 
     <Button
@@ -66,9 +67,9 @@
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:id="@+id/txtEmailAddress"
+        android:id="@+id/txtUsername"
         android:text=""
-        android:hint="Email Address"
+        android:hint="Username"
         android:layout_below="@+id/imgLogo"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />

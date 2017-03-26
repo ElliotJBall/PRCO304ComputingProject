@@ -1,14 +1,38 @@
 package com.example.elliot.automatedorderingsystem.ClassLibrary;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Elliot on 24/02/2017.
  */
 
-public abstract class User implements IUser {
+public abstract class User implements IUser, Serializable {
 
     protected String userId;
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    protected String username;
+    protected String password;
     protected String firstname;
     protected String lastname;
     protected TypeOfUser typeOfUser;
