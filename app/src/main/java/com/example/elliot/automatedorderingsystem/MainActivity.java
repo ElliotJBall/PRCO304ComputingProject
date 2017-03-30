@@ -3,8 +3,12 @@ package com.example.elliot.automatedorderingsystem;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -16,6 +20,7 @@ import android.widget.TextView;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Guest;
+import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
 
 import org.bson.Document;
@@ -39,17 +44,12 @@ public class MainActivity extends AppCompatActivity {
 
     private APIConnection APIConnection = new APIConnection();
     private asyncGetData asyncGetData;
+    private MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // If there is a customer object get it and create a new customer object
-        // Only need to create the guest object when the user is finalizing an order
-       if (getIntent().getSerializableExtra("customer") != null) {
-            customer = (Customer) getIntent().getSerializableExtra("customer");
-       }
 
         try {
             getAllRestaurants();
@@ -71,6 +71,44 @@ public class MainActivity extends AppCompatActivity {
         // Get selected restaurant and start new intent saving that restaurant
         registerRestaurantListClick();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mainmenu, menu);
+        menuItem = menu.findItem(R.id.orderTotal);
+        menuItem.setTitle("£" + String.format("%.2f", Order.getInstance().getTotalPrice()));
+        // If there is a customer object get it and create a new customer object
+        // Only need to create the guest object when the user is finalizing an order
+        if (getIntent().getSerializableExtra("customer") != null) {
+            customer = (Customer) getIntent().getSerializableExtra("customer");
+            getSupportActionBar().setTitle(customer.getUsername());
+        } else {
+            getSupportActionBar().setTitle("All Restaurants");
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Get which item was selected and redirect user to the appropriate activity
+        switch (item.getItemId()) {
+            case R.id.basketIcon:
+                if (customer != null) {
+                    startActivity(new Intent(MainActivity.this , BasketActivity.class).putExtra("customer" , customer));
+                } else {
+                    startActivity(new Intent(MainActivity.this , BasketActivity.class));
+                }
+                break;
+            case R.id.orderTotal:
+                if (customer != null) {
+                    startActivity(new Intent(MainActivity.this , BasketActivity.class).putExtra("customer" , customer));
+                } else {
+                    startActivity(new Intent(MainActivity.this , BasketActivity.class));
+                }
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getAllRestaurants() throws JSONException, ExecutionException, InterruptedException, ParseException {
@@ -204,4 +242,14 @@ public class MainActivity extends AppCompatActivity {
             return returnedJSON;
         }
     } //End of AsyncTask
+
+    @Override
+    public void onResume() {
+        // If the user presses the back button you must update the order total on the previous activity
+        super.onResume();
+
+        if (menuItem != null) {
+            menuItem.setTitle("£" + String.format("%.2f", Order.getInstance().getTotalPrice()));
+        }
+    }
 }

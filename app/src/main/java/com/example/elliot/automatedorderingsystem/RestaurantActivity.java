@@ -1,16 +1,21 @@
 package com.example.elliot.automatedorderingsystem;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
+import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
 
 import org.bson.Document;
@@ -18,7 +23,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -32,6 +36,7 @@ public class RestaurantActivity extends AppCompatActivity {
     private APIConnection APIConnection = new APIConnection();
     private asyncGetData asyncGetData;
     private String urlToUse, returnedJSON = "";
+    private MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +64,40 @@ public class RestaurantActivity extends AppCompatActivity {
 
         // Get the updated array menu and add the elements to the listview
         populateFoodList();
+        // Register the clicks on the list view - once clicked add them to the order
+        registerMenuListClick();
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Get the menu layout and inflate it setting it on the activity
+        getMenuInflater().inflate(R.menu.mainmenu, menu);
+        getSupportActionBar().setTitle(restaurant.getRestaurantName());
+        menuItem = menu.findItem(R.id.orderTotal);
+        menuItem.setTitle("£" + String.format("%.2f", Order.getInstance().getTotalPrice()));
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Get which item was selected and redirect user to the appropriate activity
+        switch (item.getItemId()) {
+            case R.id.basketIcon:
+                if (customer != null) {
+                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class).putExtra("customer" , customer));
+                } else {
+                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class));
+                }
+                break;
+            case R.id.orderTotal:
+                if (customer != null) {
+                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class).putExtra("customer" , customer));
+                } else {
+                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class));
+                }
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getMenu() throws ExecutionException, InterruptedException, JSONException {
@@ -86,6 +124,7 @@ public class RestaurantActivity extends AppCompatActivity {
     }
 
     private void populateFoodList() {
+        // Create an adapter for the list view
         ArrayAdapter<Food> adapter = new foodListAdapter();
         ListView foodMenu = (ListView) findViewById(R.id.foodListView);
         foodMenu.setAdapter(adapter);
@@ -121,6 +160,28 @@ public class RestaurantActivity extends AppCompatActivity {
         }
     }
 
+    private void registerMenuListClick() {
+        final ListView menuListView = (ListView) findViewById(R.id.foodListView);
+        menuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the item of food that was selected
+                Food selectedFood = menu.get(position);
+
+                // Use of SINGLETON pattern to stop more than one order being produced - Add to the current instance of order
+                Order.getInstance().addToOrder(selectedFood);
+                // Get the total price of the order so far
+
+                // Get the total price of the order so far
+                float totalPrice = Order.getInstance().calculateTotalPrice(Order.getInstance().getFoodOrdered());
+
+                // Format the string to two decimal places so it can be displayed
+                // Update the total displayed to the user
+                menuItem.setTitle("£" + String.format("%.2f", totalPrice));
+            }
+        });
+    }
+
     public class asyncGetData extends AsyncTask<Object, Object, String> {
         @Override
         protected String doInBackground(Object... params) {
@@ -137,6 +198,16 @@ public class RestaurantActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             return returnedJSON;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        // If the user presses the back button you must update the order total on the previous activity
+        super.onResume();
+
+        if (menuItem != null) {
+            menuItem.setTitle("£" + String.format("%.2f", Order.getInstance().getTotalPrice()));
         }
     }
 }

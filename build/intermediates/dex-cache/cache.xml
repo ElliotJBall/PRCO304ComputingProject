@@ -21,30 +21,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\Elliot\.android\build-cache\5cbfa63a357afaaa139f9d79fb9f38f2ca104938\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="7113302c965566b66df46c6ca75ea301576114a5">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_b250485a88f03669ae1bb89107243abda6524249\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\AppData\Local\Android\sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.1\constraint-layout-solver-1.0.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="1ad79631209e77b0a2730fc112b4cc0c66a95132">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\constraint-layout-solver-1.0.1_c195b5a9aa865ee825aa364678fc6e8c95c8878e\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="281918764f95ad2382d0f9216e54f8976e0d1948">
+        sha1="81e1045c5fe5763488cc1ca8fc3adf97b16ebf70">
         <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_180d7a80dda00c3bda8524811a0c205cf19f0219\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Elliot\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6975da39a7040257bd51d21a231b76c915872d38">
+        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\javax.inject-1_4de681d1b47e56f915e7184b730ca814eaef80ea\classes.dex" />
     </item>
 
 </items>
