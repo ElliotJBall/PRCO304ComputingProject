@@ -1,0 +1,260 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.elliot.automatedorderingsystem.BasketCheckoutDetailsFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <Button
+        android:id="@+id/btnPurchaseOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:text="PURCHASE ORDER"
+        android:textColor="@color/colorWhite"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="11dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/totalCostDivider" />
+
+    <TextView
+        android:id="@+id/txtAccountDetailsDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/accountDivider"
+        android:layout_marginTop="11dp"
+        android:text="Please confirm your account details below:" />
+
+    <TextView
+        android:id="@+id/txtAddressDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address Details:"
+        android:layout_below="@+id/editSurname"
+        android:layout_alignStart="@+id/addressDivider"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/txtContactDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtPostcode"
+        android:layout_below="@+id/editPostcode"
+        android:layout_marginTop="19dp"
+        android:text="ContactDetails:" />
+
+    <TextView
+        android:id="@+id/txtFirstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="First Name:"
+        android:layout_below="@+id/txtAccountDetailsDescription"
+        android:layout_alignStart="@+id/txtAccountDetailsDescription" />
+
+    <TextView
+        android:id="@+id/txtAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:text="Address:"
+        android:layout_below="@+id/txtAddressDetails"
+        android:layout_alignStart="@+id/txtAddressDetails" />
+
+    <TextView
+        android:id="@+id/txtSecondName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Second Name:"
+        android:layout_alignBaseline="@+id/editSurname"
+        android:layout_alignBottom="@+id/editSurname"
+        android:layout_alignStart="@+id/txtFirstName" />
+
+    <TextView
+        android:id="@+id/txtPostcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Postcode:"
+        android:layout_alignBaseline="@+id/editPostcode"
+        android:layout_alignBottom="@+id/editPostcode"
+        android:layout_alignStart="@+id/txtAddress" />
+
+    <TextView
+        android:id="@+id/txtTelephoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtContactDetails"
+        android:layout_below="@+id/txtContactDetails"
+        android:layout_marginTop="15dp"
+        android:text="Telephone Number:" />
+
+    <TextView
+        android:id="@+id/txtMobileNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtTelephoneNumber"
+        android:layout_below="@+id/editTelephoneNumber"
+        android:layout_marginTop="15dp"
+        android:text="Mobile Number:" />
+
+    <TextView
+        android:id="@+id/txtEmailAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:text="Email Address:"
+        android:layout_below="@+id/editMobileNumber"
+        android:layout_alignEnd="@+id/txtSecondName" />
+
+    <TextView
+        android:id="@+id/txtTotalCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Total Cost:"
+        android:layout_below="@+id/editEmailAddress"
+        android:layout_toEndOf="@+id/txtTelephoneNumber" />
+
+    <View
+        android:id="@+id/accountDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignBottom="@id/txtAccountDetailsDescription"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:background="@color/colorAccent" />
+
+    <EditText
+        android:id="@+id/editFirstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtFirstName"
+        android:layout_alignBottom="@+id/txtFirstName"
+        android:layout_alignEnd="@+id/accountDivider"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:textColor="@color/colorAccent"
+        android:textColorHint="@color/colorAccent"
+        android:textSize="14sp"
+        android:backgroundTint="@color/colorAccent"/>
+
+    <EditText
+        android:id="@+id/editSurname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/editFirstName"
+        android:layout_below="@+id/editFirstName"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:textColor="@color/colorAccent"
+        android:textColorHint="@color/colorAccent"
+        android:textSize="14sp"
+        android:backgroundTint="@color/colorAccent"/>
+
+    <EditText
+        android:id="@+id/editPostcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/editAddress"
+        android:layout_below="@+id/editAddress"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:textColor="@color/colorAccent"
+        android:textColorHint="@color/colorAccent"
+        android:textSize="14sp"
+        android:backgroundTint="@color/colorAccent"/>
+
+    <EditText
+        android:id="@+id/editTelephoneNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtTelephoneNumber"
+        android:layout_alignBottom="@+id/txtTelephoneNumber"
+        android:layout_alignEnd="@+id/contactDivider"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:textColor="@color/colorAccent"
+        android:textColorHint="@color/colorAccent"
+        android:textSize="14sp"
+        android:backgroundTint="@color/colorAccent"/>
+
+    <EditText
+        android:id="@+id/editMobileNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtMobileNumber"
+        android:layout_alignBottom="@+id/txtMobileNumber"
+        android:layout_alignStart="@+id/editTelephoneNumber"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:textColor="@color/colorAccent"
+        android:textColorHint="@color/colorAccent"
+        android:textSize="14sp"
+        android:backgroundTint="@color/colorAccent"/>
+
+    <EditText
+        android:id="@+id/editEmailAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtEmailAddress"
+        android:layout_alignBottom="@+id/txtEmailAddress"
+        android:layout_alignStart="@+id/editMobileNumber"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:textColor="@color/colorAccent"
+        android:textColorHint="@color/colorAccent"
+        android:textSize="14sp"
+        android:backgroundTint="@color/colorAccent"/>
+
+    <EditText
+        android:id="@+id/editAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtAddress"
+        android:layout_alignBottom="@+id/txtAddress"
+        android:layout_alignEnd="@+id/addressDivider"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:textColor="@color/colorAccent"
+        android:textColorHint="@color/colorAccent"
+        android:textSize="14sp"
+        android:backgroundTint="@color/colorAccent"/>
+
+    <View
+        android:id="@+id/addressDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignBottom="@id/txtAddressDetails"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:background="@color/colorAccent" />
+
+    <View
+        android:id="@+id/totalCostDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignBottom="@+id/editEmailAddress"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:background="@color/colorAccent" />
+
+    <View
+        android:id="@+id/contactDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignBottom="@id/txtContactDetails"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:background="@color/colorAccent" />
+
+</RelativeLayout>

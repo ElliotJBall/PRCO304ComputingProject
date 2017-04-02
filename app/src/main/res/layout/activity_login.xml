@@ -20,7 +20,9 @@
         android:id="@+id/btnSignIn"
         android:layout_below="@+id/txtPassword"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorAccent"/>
 
     <Button
         android:text="@string/register"
@@ -30,7 +32,9 @@
         android:id="@+id/btnRegister"
         android:layout_below="@+id/btnSignIn"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorAccent"/>
 
     <Button
         android:text="@string/continue_as_guest"
@@ -40,7 +44,9 @@
         android:id="@+id/btnContinueAsGuest"
         android:layout_below="@+id/btnRegister"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorAccent"/>
 
     <ImageView
         android:layout_width="300px"

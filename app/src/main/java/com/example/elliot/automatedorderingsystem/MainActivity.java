@@ -39,7 +39,7 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity {
 
     protected Customer customer;
-    protected List<Restaurant> allRestaurants = new ArrayList<Restaurant>();
+    protected ArrayList<Restaurant> allRestaurants = new ArrayList<Restaurant>();
     protected String urlToUse, returnedJSON = "", openingTime ="00:00:00", closingTime = "23:00:00", currentTime = "00:00:00";
 
     private APIConnection APIConnection = new APIConnection();
@@ -174,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
             if (restaurantItemView == null) {
                 restaurantItemView = getLayoutInflater().inflate(R.layout.restaurant_view, parent, false);
             }
-
             // Get the current restaurant from the array of restaurants
             Restaurant currentRestaurant = allRestaurants.get(position);
 
