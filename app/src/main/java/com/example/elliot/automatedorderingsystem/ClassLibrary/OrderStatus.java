@@ -9,7 +9,5 @@ public enum OrderStatus {
 
     COOKING,
 
-    PACKAGING,
-
     READY
 }

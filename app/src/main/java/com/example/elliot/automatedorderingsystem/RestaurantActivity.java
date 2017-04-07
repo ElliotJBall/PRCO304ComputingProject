@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
@@ -84,16 +85,16 @@ public class RestaurantActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.basketIcon:
                 if (customer != null) {
-                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class).putExtra("customer" , customer));
+                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class).putExtra("customer" , customer).putExtra("restaurant" , restaurant));
                 } else {
-                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class));
+                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class).putExtra("restaurant" , restaurant));
                 }
                 break;
             case R.id.orderTotal:
                 if (customer != null) {
-                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class).putExtra("customer" , customer));
+                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class).putExtra("customer" , customer).putExtra("restaurant" , restaurant));
                 } else {
-                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class));
+                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class).putExtra("restaurant" , restaurant));
                 }
                 break;
         }

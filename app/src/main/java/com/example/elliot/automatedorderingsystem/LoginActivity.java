@@ -129,15 +129,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected String doInBackground(Object... params) {
                 try {
-                    Thread.sleep(1000);
                     returnedJSON = APIConnection.getAPIData(urlToUse);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (ParseException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             return returnedJSON;

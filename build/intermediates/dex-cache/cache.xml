@@ -3,75 +3,12 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\Elliot\.android\build-cache\670c80a2625b68c4f5c56a5756ad55e2433eb510\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="fa0446a14ed5dd3725047d6399ffea771a564b30">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_58021e115d36219c86e1f50db3c151187076fff0\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\.android\build-cache\77a00c37e3e7af68055691888620a180beeac8e9\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e820b7be8c035dd522da4bc822e8a76c8e27921a">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_9af6e7555dacd78a35fd7208eee21c46a84e52ca\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="6975da39a7040257bd51d21a231b76c915872d38">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\javax.inject-1_4de681d1b47e56f915e7184b730ca814eaef80ea\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\.android\build-cache\a1064baa9d793504cef841fcac9e4ad3e0955724\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="ee394a892dd21c03a528139c1e8d4e0e1264ac84">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_90b8b6775c898b73a4d328cbd6f035f50a7db5fc\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="81e1045c5fe5763488cc1ca8fc3adf97b16ebf70">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_180d7a80dda00c3bda8524811a0c205cf19f0219\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.2.0\support-annotations-25.2.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="4a5a82a027706397fff621b22fd6fa796e91d7c5">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-25.2.0_9d24ef4a42fc4f6cdb28ec828840866ab9db4d12\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
         <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_44723bd6e05cf662065ca45c72b0372aed4dad66\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\.android\build-cache\851eced14037c69815e24cf55443719214b86bca\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_4e0a836ca16aa5ef9ede32635c79715124ee1888\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -84,21 +21,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\Elliot\.android\build-cache\13fdc8bf19efe5b1e7b646bd23bddbd0f614c39c\output\jars\classes.jar"
+        jar="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="8fe8a8f77d651982ce5e18f6187dc4daf914ac57">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_1bef020030deefb8b3707474ec9ec7ec58d79828\classes.dex" />
+        sha1="9311ffb6d7c75a63859a8047809fcdf87fe4f622">
+        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_180d7a80dda00c3bda8524811a0c205cf19f0219\classes.dex" />
     </item>
     <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\.android\build-cache\21840d5bd6a411faf633693404dbfefa30afceae\output\jars\classes.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\libs\gson-2.6.2.jar"
+        jumboMode="false"
         optimize="true"
         revision="25.0.2"
-        sha1="67eb33110dbacb46a48175b08ae0c96761d2c17d">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_43f525d42cdb05b04fee457365cbd7857c46f6f3\classes.dex" />
+        sha1="f1bc476cc167b18e66c297df599b2377131a8947">
+        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\pre-dexed\debug\gson-2.6.2_4122167b09ddd8d456d4e569b60738c1ba7a06e1.jar" />
     </item>
 
 </items>

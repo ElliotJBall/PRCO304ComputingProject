@@ -7,11 +7,13 @@ import com.example.elliot.automatedorderingsystem.ClassLibrary.TypeOfUser;
 
 import org.bson.Document;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
@@ -59,6 +61,45 @@ public class APIConnection implements Runnable {
 
     }
 
+    public void postAPIData(String urlToUse, JSONObject objectToInsert) throws IOException {
+        // Create a string that will hold the URL connection
+        final String URL = urlToUse;
+        // Create new URL using string URL above
+        URL url = new URL(URL);
+        // Create new HTTP request
+        HttpURLConnection request = (HttpURLConnection) url.openConnection();
+        // Allow output over HTTP connection
+        request.setDoInput(true);
+        request.setDoOutput(true);
+        // Set the method to POST as we're adding a new venue
+        request.setRequestMethod("POST");
+        // Accept JSON and set chartype
+        request.setRequestProperty("Accept", "application/json");
+        request.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+        request.connect();
+
+        // Set a new outputSteamWriter and write JSON, flush to ensure it wrote and close it
+        OutputStreamWriter output = new OutputStreamWriter(request.getOutputStream(), "UTF-8");
+        output.write(String.valueOf(objectToInsert));
+        output.flush();
+        output.close();
+
+        // Get input steam
+        InputStream inputStream = request.getInputStream();
+        // Set bufferReader to inputStream
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        // Create String to holdnextline and a string buffer to hold entire String
+        String nextLine = null;
+        StringBuilder stringBuffer = new StringBuilder();
+        // Loop throughand add the string to the string buffer
+        while ((nextLine = bufferedReader.readLine()) != null) {
+            stringBuffer.append(nextLine);
+        }
+        // Close the input stream
+        inputStream.close();
+        request.disconnect();
+    }
+
     public void onResume(){
         thread = new Thread(this);
         thread.start();
@@ -88,7 +129,4 @@ public class APIConnection implements Runnable {
             e.printStackTrace();
         }
     }
-
-
-
 }

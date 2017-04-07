@@ -3,10 +3,8 @@ package com.example.elliot.automatedorderingsystem;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,9 +15,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
-import com.example.elliot.automatedorderingsystem.ClassLibrary.Guest;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
 
@@ -33,7 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
@@ -148,13 +146,16 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Restaurant selectedRestaurant = allRestaurants.get(position);
 
+                Intent intent = new Intent();
+                intent.putExtra("restaurant", selectedRestaurant);
+
                 if (customer != null) {
-                    Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
+                    intent = new Intent(MainActivity.this, RestaurantActivity.class);
                     intent.putExtra("customer" , customer);
                     intent.putExtra("restaurant" , selectedRestaurant);
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
+                    intent = new Intent(MainActivity.this, RestaurantActivity.class);
                     intent.putExtra("restaurant", selectedRestaurant);
                     startActivity(intent);
                 }
@@ -178,7 +179,9 @@ public class MainActivity extends AppCompatActivity {
             Restaurant currentRestaurant = allRestaurants.get(position);
 
             // Fill the images and different TextViews here
+
             ImageView imageView = (ImageView) restaurantItemView.findViewById(R.id.imgRestaurant);
+
 
             TextView restaurantName = (TextView) restaurantItemView.findViewById(R.id.txtRestaurantName);
             restaurantName.setText(currentRestaurant.getRestaurantName());
