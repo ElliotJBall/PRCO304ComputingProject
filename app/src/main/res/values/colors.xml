@@ -5,4 +5,5 @@
     <color name="colorAccent">#F16667</color>
     <color name="transparent">#00ffffff</color>
     <color name="colorWhite">#FFFFFFFF</color>
+    <color name="confirmationPopupBackground">#F9F9F9</color>
 </resources>

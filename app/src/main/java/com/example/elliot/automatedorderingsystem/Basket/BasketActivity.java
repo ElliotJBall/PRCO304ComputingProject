@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
-import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
 import com.example.elliot.automatedorderingsystem.R;
 
@@ -23,7 +22,6 @@ import java.util.Collections;
 
 public class BasketActivity extends AppCompatActivity implements View.OnClickListener {
 
-    protected Customer customer;
     protected Restaurant restaurant;
     private MenuItem menuItem;
     private TextView orderTotal;
@@ -46,8 +44,8 @@ public class BasketActivity extends AppCompatActivity implements View.OnClickLis
             restaurant = (Restaurant) getIntent().getSerializableExtra("restaurant");
         }
 
-        orderTotal.setText("Total       £" + String.format("%.2f", Order.getInstance().getTotalPrice()));
-
+        // Set the currentTotal text to the customers order total
+        orderTotal.setText("£" + String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
         // Set the button onClickListener to check when the user wants to complete their order
         btnCheckout.setOnClickListener(this);
 
@@ -56,7 +54,7 @@ public class BasketActivity extends AppCompatActivity implements View.OnClickLis
 
         // Check if the customers order is empty - if empty display empty basket sign ect
         // IF statement checks if order array is empty - if true then display the empty basket - false means get the first fragment and display it
-        if (Order.getInstance().getFoodOrdered().isEmpty()) {
+        if (Customer.getInstance().getUserOrder().getFoodOrdered().isEmpty()) {
             // Order total is empty - disable all elements and display the fragment which shows an empty basket
             disableBasketElements();
             getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, new BasketCheckoutEmptyFragment()).commit();
@@ -68,16 +66,12 @@ public class BasketActivity extends AppCompatActivity implements View.OnClickLis
         getMenuInflater().inflate(R.menu.mainmenu, menu);
 
         menuItem = menu.findItem(R.id.orderTotal);
-        menuItem.setTitle("£" + String.format("%.2f", Order.getInstance().getTotalPrice()));
 
-        // If there is a customer object get it and create a new customer object
-        // Only need to create the guest object when the user is finalizing an order
-        if (getIntent().getSerializableExtra("customer") != null) {
-            customer = (Customer) getIntent().getSerializableExtra("customer");
-            getSupportActionBar().setTitle("Basket");
-        } else {
-            getSupportActionBar().setTitle("Basket");
+        if (menuItem != null) {
+            menuItem.setTitle("£" + String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
         }
+
+        getSupportActionBar().setTitle("Basket");
         return true;
     }
 
@@ -87,7 +81,7 @@ public class BasketActivity extends AppCompatActivity implements View.OnClickLis
         super.onResume();
 
         if (menuItem != null) {
-            menuItem.setTitle("£" + String.format("%.2f", Order.getInstance().getTotalPrice()));
+            menuItem.setTitle("£" + String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
         }
     }
 
@@ -101,21 +95,10 @@ public class BasketActivity extends AppCompatActivity implements View.OnClickLis
                 // Display the fragment with the user details on
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, new BasketCheckoutDetailsFragment()).commit();
-
-                // If the customer is signed in grab their data and add it to the edit text boxes for them
-                // Check if there was a customer object passed
-                if (getIntent().getSerializableExtra("customer") != null) {
-                    customer = (Customer) getIntent().getSerializableExtra("customer");
-                    populateCustomerData();
-                }
                 break;
             default:
                 break;
         }
-    }
-
-    private void populateCustomerData() {
-        // Get all the edit texts and add the customer data accordingly
     }
 
     private void populateBasketList() {
@@ -127,7 +110,8 @@ public class BasketActivity extends AppCompatActivity implements View.OnClickLis
 
     private class orderListAdapter extends ArrayAdapter<Food> {
         public orderListAdapter() {
-            super(BasketActivity.this, R.layout.basket_view, Order.getInstance().getFoodOrdered());
+            super(BasketActivity.this, R.layout.basket_view, Customer.getInstance().getUserOrder().getFoodOrdered());
+
         }
 
         @Override
@@ -137,10 +121,13 @@ public class BasketActivity extends AppCompatActivity implements View.OnClickLis
                 orderItemView = getLayoutInflater().inflate(R.layout.basket_view, parent, false);
             }
 
-            // Get the current food from the menu to display
-            Food currentFood = Order.getInstance().getFoodOrdered().get(position);
+            // Create the variables for the food and select it from the correct Ojbect (Customer / Guest)
+            // Create INT for occurnces to see how many of that object the user has ordered
+            Food currentFood = new Food();
+            int occurnces = 1;
 
-            int occurnces = Collections.frequency(Order.getInstance().getFoodOrdered(), currentFood);
+            currentFood = Customer.getInstance().getUserOrder().getFoodOrdered().get(position);
+            occurnces = Collections.frequency(Customer.getInstance().getUserOrder().getFoodOrdered(), currentFood);
 
             // Fill the text views with the information gathered from the current food object
             TextView foodName = (TextView) orderItemView.findViewById(R.id.txtFoodName);

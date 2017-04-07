@@ -1,9 +1,14 @@
 package com.example.elliot.automatedorderingsystem.Basket;
 
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatTextView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +22,8 @@ import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
+import com.example.elliot.automatedorderingsystem.MainActivity;
+import com.example.elliot.automatedorderingsystem.OrderHistoryActivity;
 import com.example.elliot.automatedorderingsystem.R;
 import com.google.gson.Gson;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -36,13 +43,13 @@ import java.util.concurrent.ExecutionException;
 public class BasketCheckoutDetailsFragment extends Fragment implements View.OnClickListener {
 
     private Button btnPurchaseOrder;
-    private Customer customer;
     private Restaurant restaurant;
     private View rootView;
-    private com.example.elliot.automatedorderingsystem.APIConnection APIConnection = new APIConnection();
+    private APIConnection APIConnection = new APIConnection();
     private asyncGetData asyncGetData;
     private String urlToUse = "";
     private JSONObject objectToUse;
+    private int responseCode = 0;
     private AVLoadingIndicatorView loadingIndicator;
 
     // EditTexts for all the fragments parts, need to get these to get and set data
@@ -63,7 +70,7 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
 
         // Set the totalCost textview with the order total
         TextView totalCost = (TextView) rootView.findViewById(R.id.txtTotalCost);
-        totalCost.setText("Total:   £" + String.format("%.2f", Order.getInstance().getTotalPrice()));
+        totalCost.setText("Total:   £" + String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
 
         // Get all the textBoxes from the view and stor
         setEditTextBoxes();
@@ -73,11 +80,11 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
             restaurant = (Restaurant) getActivity().getIntent().getSerializableExtra("restaurant");
         }
 
-        // Check if there was a serialised object of the customer
-        if (getActivity().getIntent().getSerializableExtra("customer") != null) {
-            customer = (Customer) getActivity().getIntent().getSerializableExtra("customer");
+        // Get the user details from the customer Instance
+        if (Customer.getInstance().getUsername() != null) {
             addCustomerAccountDetails();
         }
+
 
         // Find the button and set onClickListener to check when user wants to complete purchase
         btnPurchaseOrder = (Button) rootView.findViewById(R.id.btnPurchaseOrder);
@@ -106,6 +113,8 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
                         e.printStackTrace();
                     } catch (ExecutionException e) {
                         e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
                 break;
@@ -126,12 +135,12 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
 
     private void addCustomerAccountDetails() {
         // Set all the different information to that of the customer object
-        editFirstName.setText(customer.getFirstname());
-        editSurname.setText(customer.getLastname());
-        editAddress.setText(customer.getAddress());
-        editTelephoneNumber.setText(customer.getTelephoneNumber());
-        editMobileNumber.setText(customer.getMobileNumber());
-        editEmailAddress.setText(customer.getEmailAddress());
+        editFirstName.setText(Customer.getInstance().getFirstname());
+        editSurname.setText(Customer.getInstance().getLastname());
+        editAddress.setText(Customer.getInstance().getAddress());
+        editTelephoneNumber.setText(Customer.getInstance().getTelephoneNumber());
+        editMobileNumber.setText(Customer.getInstance().getMobileNumber());
+        editEmailAddress.setText(Customer.getInstance().getEmailAddress());
     }
 
     private boolean checkEditTextBoxes() {
@@ -157,10 +166,10 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
         return editTextAreFull;
     }
 
-    private void insertOrder() throws JSONException, ExecutionException, InterruptedException {
+    private void insertOrder() throws JSONException, ExecutionException, InterruptedException, IOException {
         // Create a new object ID and get all the different elements required for the BSON document
-        ObjectId orderID = ObjectId.get();
-        String foodOrdered = new Gson().toJson(Order.getInstance().getFoodOrdered());
+        final ObjectId orderID = ObjectId.get();
+        String foodOrdered = new Gson().toJson(Customer.getInstance().getUserOrder().getFoodOrdered());
 
         // Set the URL to the currentOrders dabase
         urlToUse = "http://10.0.2.2:8080/order/currentOrders/";
@@ -168,12 +177,76 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
         // Create the JSON object and put required fields
         objectToUse = new JSONObject();
         objectToUse.put("_id", orderID.toString());
-        objectToUse.put("customerID", customer.getUserId());
-        objectToUse.put("customerName", customer.getUsername());
+
+        // Check if customer ID is null - if it is generate an ID for them
+        if (Customer.getInstance().getUserId().equals("")) {
+            ObjectId customerID = ObjectId.get();
+        } else {
+            objectToUse.put("customerID", Customer.getInstance().getUserId());
+        }
+
+        objectToUse.put("customerID", Customer.getInstance().getUserId());
+        objectToUse.put("customerName", editFirstName.getText().toString());
+        objectToUse.put("customerEmailAddress", editEmailAddress.getText().toString());
         objectToUse.put("foodOrdered", foodOrdered);
-        objectToUse.put("totalPrice", String.format("%.2f", Order.getInstance().getTotalPrice()));
+        objectToUse.put("totalPrice", String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
         objectToUse.put("restaurant" , restaurant.getRestaurantName());
 
+        // Disable all the elements from the VIEW and add the loading icon
+        disableTextAndEditboxes();
+
+        // Get the APIConnection class and call the POST method passing the JSON
+        asyncGetData = new asyncGetData();
+        asyncGetData.execute().get();
+        asyncGetData.cancel(true);
+
+        // Wait three seconds - Check whether the insert was successful and if it was load new activity and display the order
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable(){
+            @Override
+            public void run(){
+                // If the response code indicates the order was successfuly added display popup showing order info
+                // Providing user feedback about their action
+                if (responseCode == 201) {
+                    // Create an alert dialog to display to the user
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                    View mView = rootView.inflate(getActivity(), R.layout.order_confirmation_popup, null);
+                    alertDialogBuilder.setView(mView);
+
+                    // Find the EditText boxes and append the required data (OrderID and total price)
+                    AppCompatTextView editOrderNumber = (AppCompatTextView) mView.findViewById(R.id.txtOrderNumber);
+                    editOrderNumber.append(orderID.toString());
+                    AppCompatTextView editTotalPrice = (AppCompatTextView) mView.findViewById(R.id.txtOrderTotal);
+                    editTotalPrice.setText("Order total: £" + String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
+                    AppCompatTextView editRestaurantOrderedTo = (AppCompatTextView) mView.findViewById(R.id.txtRestaurantOrderedTo);
+                    editRestaurantOrderedTo.append(" " + restaurant.getRestaurantName());
+
+                    // Find the button and set an onClickListener to take the customer to their orders
+                    Button btnViewAllOrders = (Button) mView.findViewById(R.id.btnViewUsersOrderHistory);
+                    btnViewAllOrders.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // Start a new activity where the user can view their order history
+                            startActivity(new Intent(getActivity() , OrderHistoryActivity.class));
+                        }
+                    });
+
+                    // Find the clickable textView for the Guest users to go to the home activity
+                    AppCompatTextView txtContinueGuest = (AppCompatTextView) mView.findViewById(R.id.txtContinueGuest);
+                    txtContinueGuest.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(getActivity() , MainActivity.class));
+                        }
+                    });
+
+                    // Set the dialog to the newly built AlertDialog - Display it
+                    AlertDialog dialog = alertDialogBuilder.create();
+                    dialog.show();
+
+                }
+            }
+        }, 3000);
     }
 
     private void disableTextAndEditboxes() throws ExecutionException, InterruptedException {
@@ -187,19 +260,31 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
 
         // Enable the loading icon to show to the user the application is currently processing their actions
         loadingIndicator.setVisibility(View.VISIBLE);
+    }
 
-        // Call the Async task and run the post command
-        asyncGetData = new asyncGetData();
-        asyncGetData.execute().get();
-        // Cancel the async task so it no longer runs in the background
-        asyncGetData.cancel(true);
+    private void enableTextAndEditboxes() {
+        // Get all elements of the relative layout and loop through disabling them one by one
+        RelativeLayout relativeLayout = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutBasketDetailsFragment);
+
+        for (int i = 0; i < relativeLayout.getChildCount(); i++) {
+            View view = relativeLayout.getChildAt(i);
+            view.setVisibility(View.VISIBLE);
+        }
+
+        // Enable the loading icon to show to the user the application is currently processing their actions
+        loadingIndicator.setVisibility(View.INVISIBLE);
+    }
+
+    private boolean checkInsertOrderSuccessful() {
+        boolean wasSuccessful = false;
+        return wasSuccessful;
     }
 
     public class asyncGetData extends AsyncTask<Object, Object, Void> {
         @Override
         protected Void doInBackground(Object... params) {
             try {
-                APIConnection.postAPIData(urlToUse, objectToUse);
+                responseCode = APIConnection.postAPIData(urlToUse, objectToUse);
             } catch (IOException e) {
                 e.printStackTrace();
             }

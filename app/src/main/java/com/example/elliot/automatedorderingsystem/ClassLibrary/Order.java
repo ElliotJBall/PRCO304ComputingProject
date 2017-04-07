@@ -1,12 +1,13 @@
 package com.example.elliot.automatedorderingsystem.ClassLibrary;
 
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 /**
  * Created by Elliot on 24/02/2017.
  */
 
-public class Order {
+public class Order implements Serializable {
 
     protected String orderId;
     protected String orderNumber;
@@ -14,17 +15,8 @@ public class Order {
     protected ArrayList<Food> foodOrdered = new ArrayList<Food>();
     protected OrderStatus orderStatus;
 
-    protected static Order mInstance;
-
     public Order() {
 
-    }
-
-    public synchronized static Order getInstance() {
-        if (mInstance == null) {
-            mInstance = new Order();
-        }
-        return mInstance;
     }
 
     public Order(String orderId, String orderNumber, float totalPrice, ArrayList<Food> foodOrdered, OrderStatus orderStatus) {

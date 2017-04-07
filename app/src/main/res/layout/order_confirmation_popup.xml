@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
+
+    <LinearLayout
+        android:background="@color/confirmationPopupBackground"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+
+        android:layout_height="75dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/imgOrderComplete"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:padding="5dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/tick" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtOrderSuccess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        android:text="Thank you! Your order was placed successfully"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/txtOrderNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Order Number: "
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/txtRestaurantOrderedTo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Restaurant: "
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/txtOrderTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="£0.00"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:layout_marginBottom="5dp"/>
+
+    <Button
+        android:id="@+id/btnViewUsersOrderHistory"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View all orders"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:id="@+id/txtContinueGuest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:clickable="true"
+        android:text="Not Signed in? Click here to continue"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="13sp" />
+</LinearLayout>

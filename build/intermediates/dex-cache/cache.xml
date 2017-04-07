@@ -25,17 +25,8 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="9311ffb6d7c75a63859a8047809fcdf87fe4f622">
+        sha1="38c11e0f9f231cac302c6001be6bba7e2b1d9022">
         <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_180d7a80dda00c3bda8524811a0c205cf19f0219\classes.dex" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\libs\gson-2.6.2.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="f1bc476cc167b18e66c297df599b2377131a8947">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\pre-dexed\debug\gson-2.6.2_4122167b09ddd8d456d4e569b60738c1ba7a06e1.jar" />
     </item>
 
 </items>

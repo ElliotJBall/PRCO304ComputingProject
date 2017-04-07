@@ -83,14 +83,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     // if no customer is returned provide information to user and ask them to try again
     // If there is a valid user create initialise the Mainactivity and open it
     private void checkSignIn() throws ParseException, ExecutionException, InterruptedException {
-        if (txtUsername.getText().toString().isEmpty() || txtPassword.getText().toString().isEmpty() == true) {
+        if (txtUsername.getText().toString().isEmpty() == true || txtPassword.getText().toString().isEmpty() == true) {
             Toast.makeText(this, "Please enter your username and password", Toast.LENGTH_SHORT).show();
         } else {
             urlToUse = "http://10.0.2.2:8080/customer/customerDetails/?filter={%27username%27:%20'"+username+"'}&filter={%27password%27:%20'"+password+"'}";
             asyncGetData = new asyncGetData();
             asyncGetData.execute().get();
 
-            if (returnedJSON.equals("")) {
+            if (returnedJSON.equals("") || returnedJSON.equals("[]")) {
                 Toast.makeText(this, "Incorrect username or password. Please try again.", Toast.LENGTH_SHORT).show();
             } else {
                 initiateCustomer();
@@ -107,20 +107,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Document customerDetails = Document.parse(returnedJSON);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-        // Get valus from BSON document and add to customer object then return customer
-        customer.setUserId(customerDetails.get("_id").toString());
-        customer.setUsername(customerDetails.get("username").toString());
-        customer.setPassword(customerDetails.get("password").toString());
-        customer.setFirstname(customerDetails.get("firstName").toString());
-        customer.setLastname(customerDetails.get("lastName").toString());
-        customer.setTypeOfUser(TypeOfUser.CUSTOMER);
-        customer.setDateOfBirth(dateFormat.parse(customerDetails.get("dateOfBirth").toString()));
-        customer.setAddress(customerDetails.get("address").toString());
-        customer.setCounty(customerDetails.get("county").toString());
-        customer.setCity(customerDetails.get("city").toString());
-        customer.setTelephoneNumber(customerDetails.get("telephoneNumber").toString());
-        customer.setMobileNumber(customerDetails.get("mobileNumber").toString());
-        customer.setEmailAddress(customerDetails.get("emailAddress").toString());
+        // Get values from BSON document and add to customer object then return customer
+        Customer.getInstance().setUserId(customerDetails.get("_id").toString());
+        Customer.getInstance().setUsername(customerDetails.get("username").toString());
+        Customer.getInstance().setPassword(customerDetails.get("password").toString());
+        Customer.getInstance().setFirstname(customerDetails.get("firstName").toString());
+        Customer.getInstance().setLastname(customerDetails.get("lastName").toString());
+        Customer.getInstance().setTypeOfUser(TypeOfUser.CUSTOMER);
+        Customer.getInstance().setDateOfBirth(dateFormat.parse(customerDetails.get("dateOfBirth").toString()));
+        Customer.getInstance().setAddress(customerDetails.get("address").toString());
+        Customer.getInstance().setCounty(customerDetails.get("county").toString());
+        Customer.getInstance().setCity(customerDetails.get("city").toString());
+        Customer.getInstance().setTelephoneNumber(customerDetails.get("telephoneNumber").toString());
+        Customer.getInstance().setMobileNumber(customerDetails.get("mobileNumber").toString());
+        Customer.getInstance().setEmailAddress(customerDetails.get("emailAddress").toString());
     }
 
     // Check to see whether the login details entered by the user corrospond to a record in the MongoDB database

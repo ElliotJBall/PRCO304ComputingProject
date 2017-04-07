@@ -72,7 +72,6 @@
             android:backgroundTint="@color/colorAccent"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
             android:textColor="@color/colorAccent"
             android:textColorHint="@color/colorAccent"
             android:textSize="14sp" />
@@ -87,7 +86,6 @@
             android:backgroundTint="@color/colorAccent"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
             android:textColor="@color/colorAccent"
             android:textColorHint="@color/colorAccent"
             android:textSize="14sp" />
@@ -111,7 +109,6 @@
             android:backgroundTint="@color/colorAccent"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
             android:textColor="@color/colorAccent"
             android:textColorHint="@color/colorAccent"
             android:textSize="14sp" />
@@ -162,7 +159,6 @@
             android:backgroundTint="@color/colorAccent"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
             android:textColor="@color/colorAccent"
             android:textColorHint="@color/colorAccent"
             android:textSize="14sp" />
@@ -177,7 +173,6 @@
             android:backgroundTint="@color/colorAccent"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
             android:textColor="@color/colorAccent"
             android:textColorHint="@color/colorAccent"
             android:textSize="14sp" />
@@ -210,7 +205,6 @@
             android:backgroundTint="@color/colorAccent"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
             android:textColor="@color/colorAccent"
             android:textColorHint="@color/colorAccent"
             android:textSize="14sp" />
@@ -243,7 +237,6 @@
             android:backgroundTint="@color/colorAccent"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
             android:textColor="@color/colorAccent"
             android:textColorHint="@color/colorAccent"
             android:textSize="14sp" />

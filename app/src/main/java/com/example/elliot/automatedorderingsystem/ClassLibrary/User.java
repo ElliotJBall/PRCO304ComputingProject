@@ -10,6 +10,27 @@ import java.util.Date;
 public abstract class User implements IUser, Serializable {
 
     protected String userId;
+    protected String username;
+    protected String password;
+    protected String firstname;
+    protected String lastname;
+    protected TypeOfUser typeOfUser;
+    protected Date dateOfBirth;
+    protected String address;
+    protected String county;
+    protected String city;
+    protected String telephoneNumber;
+    protected String mobileNumber;
+    protected String emailAddress;
+    protected Order userOrder = new Order();
+
+    public Order getUserOrder() {
+        return userOrder;
+    }
+
+    public void setUserOrder(Order userOrder) {
+        this.userOrder = userOrder;
+    }
 
     @Override
     public String getUsername() {
@@ -30,19 +51,6 @@ public abstract class User implements IUser, Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    protected String username;
-    protected String password;
-    protected String firstname;
-    protected String lastname;
-    protected TypeOfUser typeOfUser;
-    protected Date dateOfBirth;
-    protected String address;
-    protected String county;
-    protected String city;
-    protected String telephoneNumber;
-    protected String mobileNumber;
-    protected String emailAddress;
 
     @Override
     public String getUserId() {

@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
-import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
 
 import org.bson.Document;
@@ -44,11 +43,6 @@ public class RestaurantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
 
-        // Check if there was a customer object passed
-        if (getIntent().getSerializableExtra("customer") != null) {
-            customer = (Customer) getIntent().getSerializableExtra("customer");
-        }
-
         // Get the selected restaurant and create an object
         restaurant = (Restaurant) getIntent().getSerializableExtra("restaurant");
 
@@ -75,7 +69,9 @@ public class RestaurantActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.mainmenu, menu);
         getSupportActionBar().setTitle(restaurant.getRestaurantName());
         menuItem = menu.findItem(R.id.orderTotal);
-        menuItem.setTitle("£" + String.format("%.2f", Order.getInstance().getTotalPrice()));
+
+        menuItem.setTitle("£" + String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
+
         return true;
     }
 
@@ -85,14 +81,14 @@ public class RestaurantActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.basketIcon:
                 if (customer != null) {
-                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class).putExtra("customer" , customer).putExtra("restaurant" , restaurant));
+                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class).putExtra("restaurant" , restaurant));
                 } else {
                     startActivity(new Intent(RestaurantActivity.this , BasketActivity.class).putExtra("restaurant" , restaurant));
                 }
                 break;
             case R.id.orderTotal:
                 if (customer != null) {
-                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class).putExtra("customer" , customer).putExtra("restaurant" , restaurant));
+                    startActivity(new Intent(RestaurantActivity.this , BasketActivity.class).putExtra("restaurant" , restaurant));
                 } else {
                     startActivity(new Intent(RestaurantActivity.this , BasketActivity.class).putExtra("restaurant" , restaurant));
                 }
@@ -169,13 +165,10 @@ public class RestaurantActivity extends AppCompatActivity {
                 // Get the item of food that was selected
                 Food selectedFood = menu.get(position);
 
-                // Use of SINGLETON pattern to stop more than one order being produced - Add to the current instance of order
-                Order.getInstance().addToOrder(selectedFood);
+                // Add the item selected to the customers order
+                Customer.getInstance().getUserOrder().addToOrder(selectedFood);
                 // Get the total price of the order so far
-
-                // Get the total price of the order so far
-                float totalPrice = Order.getInstance().calculateTotalPrice(Order.getInstance().getFoodOrdered());
-
+                float totalPrice = Customer.getInstance().getUserOrder().calculateTotalPrice(Customer.getInstance().getUserOrder().getFoodOrdered());
                 // Format the string to two decimal places so it can be displayed
                 // Update the total displayed to the user
                 menuItem.setTitle("£" + String.format("%.2f", totalPrice));
@@ -208,7 +201,8 @@ public class RestaurantActivity extends AppCompatActivity {
         super.onResume();
 
         if (menuItem != null) {
-            menuItem.setTitle("£" + String.format("%.2f", Order.getInstance().getTotalPrice()));
+            // Set the menu item text to the current total
+            menuItem.setTitle("£" + String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
         }
     }
 }

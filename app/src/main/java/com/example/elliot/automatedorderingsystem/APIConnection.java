@@ -61,7 +61,7 @@ public class APIConnection implements Runnable {
 
     }
 
-    public void postAPIData(String urlToUse, JSONObject objectToInsert) throws IOException {
+    public int postAPIData(String urlToUse, JSONObject objectToInsert) throws IOException {
         // Create a string that will hold the URL connection
         final String URL = urlToUse;
         // Create new URL using string URL above
@@ -97,7 +97,11 @@ public class APIConnection implements Runnable {
         }
         // Close the input stream
         inputStream.close();
+
+        // Get the response code to send back to determine whether the POST request was successful or not
+        int responceCode = request.getResponseCode();
         request.disconnect();
+        return responceCode;
     }
 
     public void onResume(){

@@ -21,6 +21,7 @@ public interface IUser {
     String getTelephoneNumber();
     String getMobileNumber();
     String getEmailAddress();
+    Order getUserOrder();
 
     void setUsername(String username);
     void setPassword(String password);
@@ -35,4 +36,5 @@ public interface IUser {
     void setTelephoneNumber(String telephoneNumber);
     void setMobileNumber(String mobileNumber);
     void setEmailAddress(String emailAddress);
+    void setUserOrder(Order userOrder);
 }
