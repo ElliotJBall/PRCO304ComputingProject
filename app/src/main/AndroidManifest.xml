@@ -22,7 +22,7 @@
         </activity>
         <activity android:name=".RestaurantActivity" />
         <activity android:name=".Basket.BasketActivity" />
-        <activity android:name=".OrderHistoryActivity"></activity>
+        <activity android:name=".OrderHistory.OrderHistoryActivity"></activity>
     </application>
 
 </manifest>

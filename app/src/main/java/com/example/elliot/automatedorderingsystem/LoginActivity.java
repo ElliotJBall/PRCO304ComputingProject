@@ -24,7 +24,6 @@ import java.util.concurrent.ExecutionException;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     protected TextView txtUsername, txtPassword;
-    protected Customer customer = new Customer();
     protected String username, password, urlToUse, returnedJSON = "";
 
     private APIConnection APIConnection = new APIConnection();
@@ -90,12 +89,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             asyncGetData = new asyncGetData();
             asyncGetData.execute().get();
 
+            // Parse the string and get the required information
+            returnedJSON = returnedJSON.substring(returnedJSON.indexOf("[") +1 , returnedJSON.indexOf("]"));
+
             if (returnedJSON.equals("") || returnedJSON.equals("[]")) {
                 Toast.makeText(this, "Incorrect username or password. Please try again.", Toast.LENGTH_SHORT).show();
             } else {
                 initiateCustomer();
                 asyncGetData.cancel(true);
-                startActivity(new Intent(LoginActivity.this , MainActivity.class).putExtra("customer" , customer));
+                startActivity(new Intent(LoginActivity.this , MainActivity.class));
             }
             asyncGetData.cancel(true);
         }
@@ -103,7 +105,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void initiateCustomer() throws ParseException {
         // Generate BSON document and and create a new customer to store the details
-        returnedJSON = returnedJSON.substring(returnedJSON.indexOf("[") +1 , returnedJSON.indexOf("]"));
         Document customerDetails = Document.parse(returnedJSON);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 

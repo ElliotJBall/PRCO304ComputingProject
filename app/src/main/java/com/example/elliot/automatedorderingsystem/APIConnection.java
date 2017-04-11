@@ -29,7 +29,6 @@ public class APIConnection implements Runnable {
     String connection = "";
 
     public String getAPIData(String urlToUse) throws IOException, JSONException, ParseException {
-        connection = urlToUse;
         // Create a string that will hold the URL connection
         final String URL = urlToUse;
         // Create new URL using string URL above
@@ -48,16 +47,19 @@ public class APIConnection implements Runnable {
         StringBuilder sb = new StringBuilder();
         String line;
 
+
         // Add the data pulled through bufferedReader to the stringBuilder
         while ((line = br.readLine()) != null) {
             sb.append(line);
         }
         // Get the JSON string and cut out the uneeded stuff added by RESTHEART (Find more efficient way!)
         String stringJSON = sb.toString();
-        String requiredString = stringJSON.substring(stringJSON.indexOf("[") , sb.indexOf("]") +1);
+
+        // MAY NEED UNCOMMENTING - CURRENTLY WEIRD WORKAROUND TO HAL/JSON
+        // String requiredString = stringJSON.substring(stringJSON.indexOf("[") , sb.indexOf("]") +1);
 
         request.disconnect();
-        return requiredString;
+        return stringJSON;
 
     }
 

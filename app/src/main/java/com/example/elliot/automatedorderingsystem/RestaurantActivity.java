@@ -107,6 +107,9 @@ public class RestaurantActivity extends AppCompatActivity {
         asyncGetData = new asyncGetData();
         asyncGetData.execute().get();
 
+        // Get the required part of the JSON string
+        returnedJSON = returnedJSON.substring(returnedJSON.indexOf("[") , returnedJSON.indexOf("]") +1);
+
         // Create a JSON Array that'll hold all the data pulled
         JSONArray jsonArray = new JSONArray(returnedJSON);
 

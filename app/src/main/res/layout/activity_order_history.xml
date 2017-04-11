@@ -1,9 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.elliot.automatedorderingsystem.OrderHistoryActivity">
+    android:background="@color/colorWhite"
+    android:baselineAligned="false"
+    android:orientation="vertical"
+    tools:context="com.example.elliot.automatedorderingsystem.OrderHistory.OrderHistoryActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:id="@+id/currentOrdersFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.00">
+
+        <ListView
+            android:id="@+id/currentOrderList"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtCurrentOrders"
+            android:background="@android:color/white"
+            android:divider="@color/colorAccent"
+            android:dividerHeight="1dp" />
+
+        <TextView
+            android:id="@+id/txtCurrentOrders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:text="Current Orders:"
+            android:textColor="@color/colorWhite"
+            android:paddingLeft="10dp"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/previousOrdersFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="7.98">
+
+        <ListView
+            android:id="@+id/previousOrderList"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtPreviousOrders"
+            android:background="@android:color/white"
+            android:divider="@color/colorAccent"
+            android:dividerHeight="1dp" />
+
+        <TextView
+            android:id="@+id/txtPreviousOrders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:text="Previous Orders:"
+            android:textColor="@color/colorWhite"
+            android:paddingLeft="10dp"/>
+    </RelativeLayout>
+
+</LinearLayout>

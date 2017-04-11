@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatTextView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +19,10 @@ import android.widget.Toast;
 
 import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
-import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
+import com.example.elliot.automatedorderingsystem.ClassLibrary.OrderStatus;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
 import com.example.elliot.automatedorderingsystem.MainActivity;
-import com.example.elliot.automatedorderingsystem.OrderHistoryActivity;
+import com.example.elliot.automatedorderingsystem.OrderHistory.OrderHistoryActivity;
 import com.example.elliot.automatedorderingsystem.R;
 import com.google.gson.Gson;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -33,7 +32,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 
@@ -85,7 +85,6 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
             addCustomerAccountDetails();
         }
 
-
         // Find the button and set onClickListener to check when user wants to complete purchase
         btnPurchaseOrder = (Button) rootView.findViewById(R.id.btnPurchaseOrder);
         btnPurchaseOrder.setOnClickListener(this);
@@ -112,8 +111,6 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
@@ -166,12 +163,19 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
         return editTextAreFull;
     }
 
-    private void insertOrder() throws JSONException, ExecutionException, InterruptedException, IOException {
+    private void insertOrder() throws JSONException, ExecutionException, InterruptedException {
         // Create a new object ID and get all the different elements required for the BSON document
         final ObjectId orderID = ObjectId.get();
-        String foodOrdered = new Gson().toJson(Customer.getInstance().getUserOrder().getFoodOrdered());
 
-        // Set the URL to the currentOrders dabase
+        // Add the other required details to the Order object before creating the JSON
+        Customer.getInstance().getUserOrder().setOrderId(orderID.toString());
+        Customer.getInstance().getUserOrder().setOrderStatus(OrderStatus.PREPARING);
+        Customer.getInstance().getUserOrder().setDateOrdered(new Date());
+
+        // Create the JSON for the customers ORDER so it can be added to the database
+        String order = new Gson().toJson(Customer.getInstance().getUserOrder());
+
+        // Set the URL to the currentOrders database
         urlToUse = "http://10.0.2.2:8080/order/currentOrders/";
 
         // Create the JSON object and put required fields
@@ -185,11 +189,11 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
             objectToUse.put("customerID", Customer.getInstance().getUserId());
         }
 
+        // Add the other required data to the JSON object - require customer ID and firstname to link back to user and restaurant
+        // so it can be selected by the Java application
         objectToUse.put("customerID", Customer.getInstance().getUserId());
-        objectToUse.put("customerName", editFirstName.getText().toString());
-        objectToUse.put("customerEmailAddress", editEmailAddress.getText().toString());
-        objectToUse.put("foodOrdered", foodOrdered);
-        objectToUse.put("totalPrice", String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
+        objectToUse.put("customerFirstName", editFirstName.getText().toString());
+        objectToUse.put("customerOrder", order);
         objectToUse.put("restaurant" , restaurant.getRestaurantName());
 
         // Disable all the elements from the VIEW and add the loading icon
@@ -223,6 +227,7 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
 
                     // Find the button and set an onClickListener to take the customer to their orders
                     Button btnViewAllOrders = (Button) mView.findViewById(R.id.btnViewUsersOrderHistory);
+
                     btnViewAllOrders.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

@@ -3,6 +3,8 @@ package com.example.elliot.automatedorderingsystem.ClassLibrary;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 /**
  * Created by Elliot on 24/02/2017.
  */
@@ -10,21 +12,21 @@ import java.util.ArrayList;
 public class Order implements Serializable {
 
     protected String orderId;
-    protected String orderNumber;
     protected float totalPrice = 0.00f;
     protected ArrayList<Food> foodOrdered = new ArrayList<Food>();
     protected OrderStatus orderStatus;
+    protected Date dateOrdered;
 
     public Order() {
 
     }
 
-    public Order(String orderId, String orderNumber, float totalPrice, ArrayList<Food> foodOrdered, OrderStatus orderStatus) {
+    public Order(String orderId, float totalPrice, ArrayList<Food> foodOrdered, OrderStatus orderStatus, Date dateOrdered) {
         this.orderId = orderId;
-        this.orderNumber = orderNumber;
         this.totalPrice = totalPrice;
         this.foodOrdered = foodOrdered;
         this.orderStatus = orderStatus;
+        this.dateOrdered = dateOrdered;
     }
 
     protected void GenerateOrder(Order order, User user, Restaurant restaurant) {
@@ -37,14 +39,6 @@ public class Order implements Serializable {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
-    }
-
-    public String getOrderNumber() {
-        return orderNumber;
-    }
-
-    public void setOrderNumber(String orderNumber) {
-        this.orderNumber = orderNumber;
     }
 
     public float getTotalPrice() {
@@ -69,6 +63,14 @@ public class Order implements Serializable {
 
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public Date getDateOrdered() {
+        return dateOrdered;
+    }
+
+    public void setDateOrdered(Date dateOrdered) {
+        this.dateOrdered = dateOrdered;
     }
 
     public void addToOrder(Food foodToAdd) {
