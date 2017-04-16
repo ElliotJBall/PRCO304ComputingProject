@@ -5,11 +5,32 @@
         android:id="@+id/basketIcon"
         android:icon="@drawable/shoppingcart"
         android:title="Basket"
-        app:showAsAction="always|withText">
-    </item>
+        app:showAsAction="always"></item>
     <item
         android:id="@+id/orderTotal"
         android:title="0.00"
         app:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/moreoptionsicon"
+        android:title="Settings"
+        app:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/viewAccount"
+                android:icon="@drawable/accounticon"
+                android:title="View Account"
+                app:showAsAction="always">
+            </item>
+            <item
+                android:id="@+id/viewOrderHistory"
+                android:icon="@drawable/orderhistory"
+                android:title="Order history"
+                app:showAsAction="always">
+            </item>
+        </menu>
+
     </item>
 </menu>

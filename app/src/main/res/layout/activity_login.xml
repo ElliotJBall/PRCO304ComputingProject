@@ -53,6 +53,7 @@
         android:layout_height="300px"
         app:srcCompat="@drawable/photo"
         android:id="@+id/imgLogo"
+        android:layout_marginTop="52dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 

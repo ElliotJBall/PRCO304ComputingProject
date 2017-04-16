@@ -46,4 +46,16 @@
         android:numStars="5"
         android:layout_below="@+id/txtRestaurantName"
         android:layout_toEndOf="@+id/imgRestaurant" />
+
+    <TextView
+        android:id="@+id/txtRestuarantDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txtOpeningTime"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
+        android:drawableLeft="@drawable/locationmarker"
+        android:drawablePadding="5dp"
+        android:paddingRight="5dp"
+        android:text="0.00 Miles" />
 </RelativeLayout>

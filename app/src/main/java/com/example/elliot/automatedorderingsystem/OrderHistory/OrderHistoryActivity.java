@@ -1,24 +1,26 @@
 package com.example.elliot.automatedorderingsystem.OrderHistory;
 
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.elliot.automatedorderingsystem.APIConnection;
+import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
-import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
-import com.example.elliot.automatedorderingsystem.MainActivity;
 import com.example.elliot.automatedorderingsystem.R;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
-import org.bson.BSONObject;
 import org.bson.BsonArray;
 import org.bson.BsonValue;
 import org.bson.Document;
@@ -42,6 +44,8 @@ public class OrderHistoryActivity extends AppCompatActivity {
     protected String urlToUse, returnedJSON = "";
     private com.example.elliot.automatedorderingsystem.APIConnection APIConnection = new APIConnection();
     private asyncGetData asyncGetData;
+    private MenuItem menuItem;
+    private FragmentManager fragmentManager = getFragmentManager();
 
 
     @Override
@@ -63,8 +67,47 @@ public class OrderHistoryActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
 
+            // Check if the arrays are empty- if they are display the nocurrentOrders frament instead of empty listViews
+            if (currentCustomerOrders.isEmpty() && previousCustomerOrders.isEmpty()) {
+                disableAllElements();
+                getSupportFragmentManager().beginTransaction().add(R.id.orderHistoryFragmentContainer, new OrderHistoryEmptyFragment()).commit();
+            }
+
+        } else {
+            disableAllElements();
+            getSupportFragmentManager().beginTransaction().add(R.id.orderHistoryFragmentContainer, new OrderHistoryEmptyFragment()).commit();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Get the menu layout and inflate it setting it on the activity
+        getMenuInflater().inflate(R.menu.mainmenu, menu);
+        menuItem = menu.findItem(R.id.orderTotal);
+
+        menuItem.setTitle("£" + String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Get which item was selected and redirect user to the appropriate activity
+        switch (item.getItemId()) {
+            case R.id.basketIcon:
+                startActivity(new Intent(OrderHistoryActivity.this , BasketActivity.class));
+                break;
+            case R.id.orderTotal:
+                startActivity(new Intent(OrderHistoryActivity.this , BasketActivity.class));
+                break;
+            case R.id.viewOrderHistory:
+                startActivity(new Intent(OrderHistoryActivity.this, OrderHistoryActivity.class));
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getCustomersOrders() throws ExecutionException, InterruptedException, JSONException {
@@ -139,8 +182,6 @@ public class OrderHistoryActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void populateCurrentOrdersListView() {
         ArrayAdapter<Order> adapter = new OrderListAdapter();
         ListView currentOrdersList = (ListView) findViewById(R.id.currentOrderList);
@@ -151,6 +192,16 @@ public class OrderHistoryActivity extends AppCompatActivity {
         ArrayAdapter<Order> adapter = new PreviousOrderListAdapter();
         ListView previousOrdersList = (ListView) findViewById(R.id.previousOrderList);
         previousOrdersList.setAdapter(adapter);
+    }
+
+    private void disableAllElements() {
+        // Get all elements of the relative layout and loop through disabling them one by one
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.orderHistoryFragmentContainer);
+
+        for (int i = 0; i < relativeLayout.getChildCount(); i++) {
+            View view = relativeLayout.getChildAt(i);
+            view.setVisibility(View.INVISIBLE);
+        }
     }
 
     private class OrderListAdapter extends ArrayAdapter<Order> {

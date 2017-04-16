@@ -17,6 +17,7 @@ import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
+import com.example.elliot.automatedorderingsystem.OrderHistory.OrderHistoryActivity;
 
 import org.bson.Document;
 import org.json.JSONArray;
@@ -93,6 +94,9 @@ public class RestaurantActivity extends AppCompatActivity {
                     startActivity(new Intent(RestaurantActivity.this , BasketActivity.class).putExtra("restaurant" , restaurant));
                 }
                 break;
+            case R.id.viewOrderHistory:
+                startActivity(new Intent(RestaurantActivity.this, OrderHistoryActivity.class));
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -107,19 +111,22 @@ public class RestaurantActivity extends AppCompatActivity {
         asyncGetData = new asyncGetData();
         asyncGetData.execute().get();
 
-        // Get the required part of the JSON string
-        returnedJSON = returnedJSON.substring(returnedJSON.indexOf("[") , returnedJSON.indexOf("]") +1);
+        // Check to ensure the string returned has some contents otherwise dont display anything
+        if (!returnedJSON.equals("")) {
+            // Get the required part of the JSON string
+            returnedJSON = returnedJSON.substring(returnedJSON.indexOf("["), returnedJSON.indexOf("]") + 1);
 
-        // Create a JSON Array that'll hold all the data pulled
-        JSONArray jsonArray = new JSONArray(returnedJSON);
+            // Create a JSON Array that'll hold all the data pulled
+            JSONArray jsonArray = new JSONArray(returnedJSON);
 
-        // Loop through the JSON array and get all the items of food, add them to the array list so they can be displayed later
-        for (int i = 0; i < jsonArray.length(); i++) {
-            Document foodDocument = Document.parse(jsonArray.get(i).toString());
-            Food food = new Food(foodDocument.get("_id").toString(), foodDocument.get("foodName").toString()
-            , Float.valueOf(foodDocument.get("price").toString()), foodDocument.get("restaurantName").toString());
+            // Loop through the JSON array and get all the items of food, add them to the array list so they can be displayed later
+            for (int i = 0; i < jsonArray.length(); i++) {
+                Document foodDocument = Document.parse(jsonArray.get(i).toString());
+                Food food = new Food(foodDocument.get("_id").toString(), foodDocument.get("foodName").toString()
+                        , Float.valueOf(foodDocument.get("price").toString()), foodDocument.get("restaurantName").toString());
 
-            menu.add(food);
+                menu.add(food);
+            }
         }
     }
 

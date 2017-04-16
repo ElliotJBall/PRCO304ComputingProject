@@ -12,6 +12,15 @@
     </item>
     <item
         is-multidex="true"
+        jar="C:\Users\Elliot\.android\build-cache\5bba9f9f16b6187e13eaff06a8e463708c68d824\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="73ccb92b70112f2e463e415ef8d7275de7da6516">
+        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_2d8c6e0fb731b32e5e229cf02e4d55819b5c8edb\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\libs\gson-2.6.2.jar"
         jumboMode="true"
         optimize="true"
@@ -21,12 +30,30 @@
     </item>
     <item
         is-multidex="true"
+        jar="C:\Users\Elliot\.android\build-cache\259602f0bfad4320f40315c2be3f0c13d400c84c\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4c93d99d454c975536bbe3b42283eee847f03ea3">
+        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_1dcaa1cd18cce1dfa06331c47c4b9d806fa43209\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="8bb072eacd6cfe8ac98a4cfa32e75d0f832e413d">
+        sha1="86c7c62f7352dbf2fc33bc7a28c7a75e83c8301c">
         <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_180d7a80dda00c3bda8524811a0c205cf19f0219\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Elliot\.android\build-cache\18395343bfeb5278cd23c1d25bc1b127b869fdde\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="17f8750d5c0749e44dd7c54aa390d9c937803825">
+        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_78498467077dba019159cb3c414b6486d12f296c\classes.dex" />
     </item>
 
 </items>

@@ -1,6 +1,7 @@
 package com.example.elliot.automatedorderingsystem.ClassLibrary;
 
 import android.location.Location;
+import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 import java.sql.Time;
@@ -11,7 +12,7 @@ import java.util.Date;
  * Created by Elliot on 24/02/2017.
  */
 
-public class Restaurant implements Serializable {
+public class Restaurant implements Serializable, Comparable<Restaurant> {
 
     protected String restaurantId;
     protected String restaurantName;
@@ -23,6 +24,7 @@ public class Restaurant implements Serializable {
     protected Date openingTime;
     protected Date closingTime;
     protected ArrayList<Food> menu = new ArrayList<Food>();
+    protected float distanceToUser = 0.00f;
 
     public ArrayList<Food> getMenu() {
         return menu;
@@ -121,4 +123,22 @@ public class Restaurant implements Serializable {
     public void setClosingTime(Time closingTime) {
         this.closingTime = closingTime;
     }
+
+    public float getDistanceToUser() { return distanceToUser; }
+
+    public void setDistanceToUser(float distanceToUser) {
+        this.distanceToUser = distanceToUser;
+    }
+
+    @Override
+    public int compareTo(Restaurant another) {
+        if (this.getDistanceToUser() > another.getDistanceToUser()) {
+            return 1;
+        } else if (this.getDistanceToUser() < another.getDistanceToUser()) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
 }

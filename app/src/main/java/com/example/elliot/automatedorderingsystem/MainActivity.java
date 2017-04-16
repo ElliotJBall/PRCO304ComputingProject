@@ -1,8 +1,16 @@
 package com.example.elliot.automatedorderingsystem;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,26 +21,31 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
+import com.example.elliot.automatedorderingsystem.OrderHistory.OrderHistoryActivity;
 
 import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     protected ArrayList<Restaurant> allRestaurants = new ArrayList<Restaurant>();
     protected String urlToUse, returnedJSON = "", openingTime ="00:00:00", closingTime = "23:00:00", currentTime = "00:00:00";
@@ -40,32 +53,40 @@ public class MainActivity extends AppCompatActivity {
     private APIConnection APIConnection = new APIConnection();
     private asyncGetData asyncGetData;
     private MenuItem menuItem;
+    private Location customerLocation = new Location("");
+
+    // Variables to deal with gathering the users location
+    private double userLongitude = 0.00, userLatitude = 0.00;
+    // Variables to get and hold the location of the user
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        try {
-            getAllRestaurants();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        // Check for user permissions - This must be done for later versions of android devices - application functionality is serverly hampered without the permisions
+        boolean canContinue = checkForPermissions();
 
-        // Call method to populate the list view - Get all restaurants from API and display them
-        // Checks whether the restaurant is currently open or closed and edits the text accordingly
-        populateRestaurantList();
+        if (canContinue) {
+            getCustomerLocation();
+            // Set the new locations longitude and latitude to those that were just obtained
+            customerLocation.setLongitude(userLongitude);
+            customerLocation.setLatitude(userLatitude);
+        }
 
         // Set onClickListener for the listView
         // Get selected restaurant and start new intent saving that restaurant
         registerRestaurantListClick();
 
+        // Find the spinner from the layout and create an adapter using the string array
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.locationSpinner, android.R.layout.simple_spinner_item);
+        Spinner locationSpinner = (Spinner) findViewById(R.id.sortByOptionsSpinner);
+        locationSpinner.setAdapter(adapter);
+
+        // Set an onItemClickListener so we can get what the user selected
+        locationSpinner.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -89,8 +110,80 @@ public class MainActivity extends AppCompatActivity {
             case R.id.orderTotal:
                     startActivity(new Intent(MainActivity.this , BasketActivity.class));
                 break;
+            case R.id.viewOrderHistory:
+                    startActivity(new Intent(MainActivity.this, OrderHistoryActivity.class));
+                break;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void getCustomerLocation() {
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        // Attempt to get the users location before the onLocationChange method is called.
+        try {
+            Location location = locationManager.getLastKnownLocation("gps");
+            userLongitude = location.getLongitude();
+            userLatitude = location.getLatitude();
+        } catch (Exception e) {
+
+        }
+
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                userLongitude = location.getLongitude();
+                userLatitude = location.getLatitude();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                // Redirect the user to the location settings so they can enable location for this application to work
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        };
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        } else {
+            locationManager.requestLocationUpdates("gps", 1000, 0, locationListener);
+        }
+    }
+
+    private boolean checkForPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                        android.Manifest.permission.INTERNET
+                }, 10);
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void getAllRestaurants() throws JSONException, ExecutionException, InterruptedException, ParseException {
@@ -138,6 +231,55 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // Go through the different available options in the spinner
+        switch (position) {
+            case 0:
+                // Call method to populate the list view - Get all restaurants from API and display them
+                // Checks whether the restaurant is currently open or closed and edits the text accordingly
+                allRestaurants = new ArrayList<Restaurant>();
+                try {
+                    getAllRestaurants();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                populateRestaurantList();
+                break;
+            case 1:
+                // Sort the collection based on locations then update the listView
+                Collections.sort(allRestaurants);
+                populateRestaurantList();
+                break;
+            case 2:
+                // Sort the collection based on the restaurants name then update the listView
+                Collections.sort(allRestaurants, new Comparator<Restaurant>() {
+                    @Override
+                    public int compare(Restaurant r1, Restaurant r2) {
+                        return r1.getRestaurantName().compareTo(r2.getRestaurantName());
+                    }
+                });
+                populateRestaurantList();
+
+            default:
+                // Call method to populate the list view - Get all restaurants from API and display them
+                // Checks whether the restaurant is currently open or closed and edits the text accordingly
+                populateRestaurantList();
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     private class RestaurantListAdapter extends ArrayAdapter<Restaurant> {
@@ -199,6 +341,35 @@ public class MainActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            // Find the restaurantDistance textview and set the distance to the user
+            // Create variables to hold the restaurants LONGITUDE + LATITUDE
+            // Create float variable to hold the distance between the two objects
+            double restaurantLongitude = 0.00, restaurantLatitude = 0.00;
+            float distanceToRestaurant = 0.00f;
+
+            // Create a new Location object so the restaurant long+lat can be assigned to it
+            Location restaurantLocation = new Location("");
+
+            // Calculate the distance between the restaurants and the user
+            restaurantLongitude = Double.parseDouble(currentRestaurant.getLongitude());
+            restaurantLatitude = Double.parseDouble(currentRestaurant.getLatitude());
+
+            // Set the location objects longitude and latitude to that of the restaurants
+            restaurantLocation.setLongitude(restaurantLongitude);
+            restaurantLocation.setLatitude(restaurantLatitude);
+
+            // This returns the distance to the user in meters - this is required to sort the restaurants into closest first.
+            currentRestaurant.setDistanceToUser(customerLocation.distanceTo(restaurantLocation));
+            // Format the string into miles
+            float distanceInMiles = currentRestaurant.getDistanceToUser() * 0.000621371192f;
+
+            BigDecimal distanceFinal = new BigDecimal(distanceInMiles).setScale(2, BigDecimal.ROUND_HALF_UP);
+
+            // Find the textview and set the value
+            TextView restaurantDistanceToUser = (TextView) restaurantItemView.findViewById(R.id.txtRestuarantDistance);
+            restaurantDistanceToUser.setText(distanceFinal + " Miles");
+
             return restaurantItemView;
         }
     }

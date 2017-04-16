@@ -2,6 +2,7 @@ package com.example.elliot.automatedorderingsystem.Basket;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
+import com.example.elliot.automatedorderingsystem.MainActivity;
+import com.example.elliot.automatedorderingsystem.OrderHistory.OrderHistoryActivity;
 import com.example.elliot.automatedorderingsystem.R;
 
 import java.util.Collections;
@@ -73,6 +76,19 @@ public class BasketActivity extends AppCompatActivity implements View.OnClickLis
 
         getSupportActionBar().setTitle("Basket");
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Get which item was selected and redirect user to the appropriate activity
+        switch (item.getItemId()) {
+            case R.id.viewOrderHistory:
+                startActivity(new Intent(BasketActivity.this, OrderHistoryActivity.class));
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
