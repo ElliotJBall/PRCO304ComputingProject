@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/ApplicationTheme">
         <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".Login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +22,8 @@
         </activity>
         <activity android:name=".RestaurantActivity" />
         <activity android:name=".Basket.BasketActivity" />
-        <activity android:name=".OrderHistory.OrderHistoryActivity"></activity>
+        <activity android:name=".OrderHistory.OrderHistoryActivity" />
+        <activity android:name=".Login.RegisterCustomerActivity"></activity>
     </application>
 
 </manifest>

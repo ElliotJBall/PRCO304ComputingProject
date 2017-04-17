@@ -93,7 +93,7 @@ public class APIConnection implements Runnable {
         // Create String to holdnextline and a string buffer to hold entire String
         String nextLine = null;
         StringBuilder stringBuffer = new StringBuilder();
-        // Loop throughand add the string to the string buffer
+        // Loop through and add the string to the string buffer
         while ((nextLine = bufferedReader.readLine()) != null) {
             stringBuffer.append(nextLine);
         }
@@ -104,6 +104,12 @@ public class APIConnection implements Runnable {
         int responceCode = request.getResponseCode();
         request.disconnect();
         return responceCode;
+    }
+
+    public int updateAPIData() {
+        int responseCode = 0;
+
+        return responseCode;
     }
 
     public void onResume(){
