@@ -3,57 +3,12 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jar="C:\Users\Elliot\.gradle\caches\modules-2\files-2.1\org.neo4j\neo4j-cypher-frontend-3.1\3.1.2\ac01c4b4417b649e448ae8295178f07c10263909\neo4j-cypher-frontend-3.1-3.1.2.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_44723bd6e05cf662065ca45c72b0372aed4dad66\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\.android\build-cache\5bba9f9f16b6187e13eaff06a8e463708c68d824\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="73ccb92b70112f2e463e415ef8d7275de7da6516">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_2d8c6e0fb731b32e5e229cf02e4d55819b5c8edb\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\libs\gson-2.6.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="f1bc476cc167b18e66c297df599b2377131a8947">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\2\gson-2.6.2_4122167b09ddd8d456d4e569b60738c1ba7a06e1\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\.android\build-cache\259602f0bfad4320f40315c2be3f0c13d400c84c\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="4c93d99d454c975536bbe3b42283eee847f03ea3">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_1dcaa1cd18cce1dfa06331c47c4b9d806fa43209\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="1d069fbae24819c49cd70f7aeadc05093e1611c9">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_180d7a80dda00c3bda8524811a0c205cf19f0219\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Elliot\.android\build-cache\18395343bfeb5278cd23c1d25bc1b127b869fdde\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="17f8750d5c0749e44dd7c54aa390d9c937803825">
-        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_78498467077dba019159cb3c414b6486d12f296c\classes.dex" />
+        sha1="ac01c4b4417b649e448ae8295178f07c10263909">
+        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\neo4j-cypher-frontend-3.1-3.1.2_57b9c9240db45a6492efa76c434cf72295d2ee9b\classes.dex" />
     </item>
 
 </items>

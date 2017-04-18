@@ -48,7 +48,7 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     protected ArrayList<Restaurant> allRestaurants = new ArrayList<Restaurant>();
-    protected String urlToUse, returnedJSON = "", openingTime ="00:00:00", closingTime = "23:00:00", currentTime = "00:00:00";
+    protected String urlToUse, returnedJSON = "", openingTime = "00:00:00", closingTime = "23:00:00", currentTime = "00:00:00";
 
     private APIConnection APIConnection = new APIConnection();
     private asyncGetData asyncGetData;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private LocationListener locationListener;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)  {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if (canContinue) {
             getCustomerLocation();
+            getLocationUpdates();
             // Set the new locations longitude and latitude to those that were just obtained
             customerLocation.setLongitude(userLongitude);
             customerLocation.setLatitude(userLatitude);
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         menuItem = menu.findItem(R.id.orderTotal);
 
         if (menuItem != null) {
-                menuItem.setTitle("£" + String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
+            menuItem.setTitle("£" + String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
         }
         return true;
     }
@@ -105,13 +106,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // Get which item was selected and redirect user to the appropriate activity
         switch (item.getItemId()) {
             case R.id.basketIcon:
-                    startActivity(new Intent(MainActivity.this , BasketActivity.class));
+                startActivity(new Intent(MainActivity.this, BasketActivity.class));
                 break;
             case R.id.orderTotal:
-                    startActivity(new Intent(MainActivity.this , BasketActivity.class));
+                startActivity(new Intent(MainActivity.this, BasketActivity.class));
                 break;
             case R.id.viewOrderHistory:
-                    startActivity(new Intent(MainActivity.this, OrderHistoryActivity.class));
+                startActivity(new Intent(MainActivity.this, OrderHistoryActivity.class));
                 break;
             default:
                 break;
@@ -124,6 +125,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         // Attempt to get the users location before the onLocationChange method is called.
         try {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
             Location location = locationManager.getLastKnownLocation("gps");
             userLongitude = location.getLongitude();
             userLatitude = location.getLatitude();
@@ -156,6 +167,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         };
 
+    }
+
+    private void getLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -220,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void registerRestaurantListClick() {
-        final ListView restaurantListView = (ListView) findViewById(R.id.restaurantListView);
+        ListView restaurantListView = (ListView) findViewById(R.id.restaurantListView);
         restaurantListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -243,6 +257,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 allRestaurants = new ArrayList<Restaurant>();
                 try {
                     getAllRestaurants();
+                    populateRestaurantList();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -252,7 +267,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                populateRestaurantList();
                 break;
             case 1:
                 // Sort the collection based on locations then update the listView
@@ -268,11 +282,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     }
                 });
                 populateRestaurantList();
+                break;
 
             default:
                 // Call method to populate the list view - Get all restaurants from API and display them
                 // Checks whether the restaurant is currently open or closed and edits the text accordingly
-                populateRestaurantList();
                 break;
         }
     }
@@ -305,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             TextView restaurantName = (TextView) restaurantItemView.findViewById(R.id.txtRestaurantName);
             restaurantName.setText(currentRestaurant.getRestaurantName());
 
-            // Parse an opening and closing time - display either open or closed
+            // Parse an opening and closing time - di   splay either open or closed
             try {
                 Date restaurantDate = originalFormat.parse(currentRestaurant.getOpeningTime().toString());
                 openingTime = timeFormat.format(restaurantDate);
@@ -346,7 +360,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             // Create variables to hold the restaurants LONGITUDE + LATITUDE
             // Create float variable to hold the distance between the two objects
             double restaurantLongitude = 0.00, restaurantLatitude = 0.00;
-            float distanceToRestaurant = 0.00f;
 
             // Create a new Location object so the restaurant long+lat can be assigned to it
             Location restaurantLocation = new Location("");
@@ -363,7 +376,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             currentRestaurant.setDistanceToUser(customerLocation.distanceTo(restaurantLocation));
             // Format the string into miles
             float distanceInMiles = currentRestaurant.getDistanceToUser() * 0.000621371192f;
-
+            // Convert to BIGDECIMAL as float wasnt being displayed correctly
             BigDecimal distanceFinal = new BigDecimal(distanceInMiles).setScale(2, BigDecimal.ROUND_HALF_UP);
 
             // Find the textview and set the value
