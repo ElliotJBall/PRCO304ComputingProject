@@ -13,7 +13,6 @@ public interface IUser {
     String getUserId();
     String getFirstname();
     String getLastname();
-    TypeOfUser getTypeOfUser();
     Date getDateOfBirth();
     String getAddress();
     String getCounty();
@@ -28,7 +27,6 @@ public interface IUser {
     void setUserId(String userId);
     void setFirstname(String firstname);
     void setLastname(String lastname);
-    void setTypeOfUser(TypeOfUser typeOfUser);
     void setDateOfBirth(Date dateOfBirth);
     void setAddress(String address);
     void setCounty(String county);

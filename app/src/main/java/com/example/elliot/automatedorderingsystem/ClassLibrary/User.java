@@ -14,7 +14,6 @@ public abstract class User implements IUser, Serializable {
     protected String password;
     protected String firstname;
     protected String lastname;
-    protected TypeOfUser typeOfUser;
     protected Date dateOfBirth;
     protected String address;
     protected String county;
@@ -80,16 +79,6 @@ public abstract class User implements IUser, Serializable {
     @Override
     public void setLastname(String lastname) {
         this.lastname = lastname;
-    }
-
-    @Override
-    public TypeOfUser getTypeOfUser() {
-        return typeOfUser;
-    }
-
-    @Override
-    public void setTypeOfUser(TypeOfUser typeOfUser) {
-        this.typeOfUser = typeOfUser;
     }
 
     @Override

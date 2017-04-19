@@ -60,6 +60,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Call method that gets the UI elements and sets onClickListeners
         grabUIElements();
 
+        // Ensure that the loadingIndictor is set to invisible
+        loadingIndicator.setVisibility(View.INVISIBLE);
+
         // Check for user permissions - This must be done for later versions of android devices - application functionality is serverly hampered without the permisions
         checkForPermissions();
     }
@@ -69,6 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Switch with cases for each button, get which button was pressed and run the appropriate code
         switch (v.getId()) {
             case R.id.btnSignIn:
+                loadingIndicator.setVisibility(View.VISIBLE);
                 // Get the username and password
                 username = txtUsername.getText().toString();
                 password = txtPassword.getText().toString();
@@ -117,15 +121,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     // if no customer is returned provide information to user and ask them to try again
     // If there is a valid user create initialise the Mainactivity and open it
     private void checkSignIn() throws ParseException, ExecutionException, InterruptedException {
-        loadingIndicator.setVisibility(View.VISIBLE);
-
         if (txtUsername.getText().toString().isEmpty() == true || txtPassword.getText().toString().isEmpty() == true) {
             Toast.makeText(this, "Please enter your username and password", Toast.LENGTH_SHORT).show();
         } else {
             // Check the user credentials agaisnt the Neo4j database to check whether the user exists
             // Execute the task off the UI thread to ensure the application doesn't bomb
             // Create a boolean to change to true if the user does exist so the rest of the user details can be gathered
-            Runnable checkUserCredentials = new Runnable() {
+            final Thread checkUserCredentials = new Thread() {
                 @Override
                 public void run() {
                     // Connect to the Neo4j Database through the Rest API
@@ -165,16 +167,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Customer.getInstance().setTelephoneNumber(node.get("telephoneNumber").asString());
                     }
 
-                    // Task is complete so set the boolean to true to break the while loop
-                    isCompleted = true;
+                    session.close();
+                    driver.close();
                 }
             };
-            AsyncTask.execute(checkUserCredentials);
-
-            // Wait for the async task to complete before continuing, display the loading icon
-            while (isCompleted == false) {
-
-            }
+            checkUserCredentials.start();
+            checkUserCredentials.join();
 
             if (Customer.getInstance().getUsername() == null && Customer.getInstance().getPassword() == null) {
                 isCompleted = false;

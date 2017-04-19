@@ -80,8 +80,8 @@
             android:id="@+id/editFirstName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/txtFirstName"
-            android:layout_alignBottom="@+id/txtFirstName"
+            android:layout_alignBaseline="@+id/txtUsername"
+            android:layout_alignBottom="@+id/txtUsername"
             android:layout_alignEnd="@+id/accountDivider"
             android:backgroundTint="@color/colorAccent"
             android:ems="10"
@@ -192,7 +192,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/editSurname"
             android:layout_alignBottom="@+id/editSurname"
-            android:layout_alignStart="@+id/txtFirstName"
+            android:layout_alignStart="@+id/txtUsername"
             android:text="Second Name:" />
 
         <EditText
@@ -210,7 +210,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/txtFirstName"
+            android:id="@+id/txtUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/txtAccountDetailsDescription"

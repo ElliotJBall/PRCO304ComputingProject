@@ -18,17 +18,15 @@ public class Customer extends User implements Serializable {
         return mInstance;
     }
 
-    public Customer(String id, String username, String password, String userId, String firstname, String lastname, TypeOfUser typeOfUser, Date dateOfBirth
-                    , String address, String county, String city, String telephoneNumber, String mobileNumber, String emailAddress, Order userOrder) {
+    public Customer(String id, String username, String password, String firstname, String lastname, Date dateOfBirth
+                    , String address, String city, String telephoneNumber, String mobileNumber, String emailAddress, Order userOrder) {
         this.userId = id;
         this.username = username;
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.typeOfUser = typeOfUser;
         this.dateOfBirth = dateOfBirth;
         this.address = address;
-        this.county = county;
         this.city = city;
         this.telephoneNumber = telephoneNumber;
         this.mobileNumber = mobileNumber;
