@@ -110,28 +110,6 @@ public class APIConnection implements Runnable {
         return responseCode;
     }
 
-    public void neo4jLogin(String username, String password) {
-        // Connect to the Neo4j Database through the Rest API
-        Driver driver = GraphDatabase.driver("bolt://10.0.2.2:7687" , AuthTokens.basic("neo4j" , "password"));
-        Session session = driver.session();
-
-        // Statement to run to check whether the user exists in the database
-        StatementResult result = session.run("MATCH (n:Customer) WHERE n.username = {name} "
-        + "RETURN a.firstName as firstName, a.lastName as lastName"
-        , parameters("name" , username));
-
-        // Check whether there was a result if not then the user either entered the wrong credentials or the user does not exist in the database
-        // If true then add the credentials to the customer instance and then return to the loginActivity
-        while (result.hasNext()) {
-            Record record = result.next();
-            Node node = (Node) record.values().get(0).asNode();
-
-            String firstName = node.get("firstName").asString();
-            String lastName = node.get("lastName").asString();
-        }
-
-    }
-
     public void onResume(){
         thread = new Thread(this);
         thread.start();

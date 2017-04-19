@@ -19,25 +19,38 @@ import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.TypeOfUser;
 import com.example.elliot.automatedorderingsystem.MainActivity;
 import com.example.elliot.automatedorderingsystem.R;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.bson.Document;
 import org.json.JSONException;
+import org.neo4j.driver.v1.AuthTokens;
+import org.neo4j.driver.v1.Driver;
+import org.neo4j.driver.v1.GraphDatabase;
+import org.neo4j.driver.v1.Record;
+import org.neo4j.driver.v1.Session;
+import org.neo4j.driver.v1.StatementResult;
+import org.neo4j.driver.v1.Values;
+import org.neo4j.driver.v1.types.Node;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutionException;
 
+import static org.neo4j.driver.v1.Values.parameters;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // Textviews and strings to hold the customers username and password
     protected TextView txtUsername, txtPassword;
-    protected String username, password, urlToUse, returnedJSON = "";
+    protected String username, password;
 
-    private com.example.elliot.automatedorderingsystem.APIConnection APIConnection = new APIConnection();
-    private asyncGetData asyncGetData;
+    // Buttons to set onClickListeners for the various options the user has
     private Button btnSignIn, btnCreateAnAccount, btnContinueAsGuest, btnRegister;
-
-
+    // Boolean that enables the application to wait whilst the users details are collected from the database
+    private boolean isCompleted = false;
+    // Loading indicator to display when the user attempts to login
+    private AVLoadingIndicatorView loadingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,53 +109,81 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         txtUsername = (TextView) findViewById(R.id.txtUsername);
         txtPassword = (TextView) findViewById(R.id.txtPassword);
+
+        loadingIndicator = (AVLoadingIndicatorView) findViewById(R.id.signInLoadingIndicator);
     }
 
     // Ensure there are inputs for username and password
-    // run the async method to grab the user data
     // if no customer is returned provide information to user and ask them to try again
     // If there is a valid user create initialise the Mainactivity and open it
     private void checkSignIn() throws ParseException, ExecutionException, InterruptedException {
+        loadingIndicator.setVisibility(View.VISIBLE);
+
         if (txtUsername.getText().toString().isEmpty() == true || txtPassword.getText().toString().isEmpty() == true) {
             Toast.makeText(this, "Please enter your username and password", Toast.LENGTH_SHORT).show();
         } else {
-            urlToUse = "http://10.0.2.2:8080/customer/customerDetails/?filter={%27username%27:%20'" + username + "'}&filter={%27password%27:%20'" + password + "'}";
-            asyncGetData = new asyncGetData();
-            asyncGetData.execute().get();
+            // Check the user credentials agaisnt the Neo4j database to check whether the user exists
+            // Execute the task off the UI thread to ensure the application doesn't bomb
+            // Create a boolean to change to true if the user does exist so the rest of the user details can be gathered
+            Runnable checkUserCredentials = new Runnable() {
+                @Override
+                public void run() {
+                    // Connect to the Neo4j Database through the Rest API
+                    Driver driver = GraphDatabase.driver("bolt://10.0.2.2:7687" , AuthTokens.basic("neo4j" , "password"));
+                    Session session = driver.session();
 
-            // Parse the string and get the required information
-            returnedJSON = returnedJSON.substring(returnedJSON.indexOf("[") + 1, returnedJSON.indexOf("]"));
+                    // Statement to run to check whether the user exists in the database
+                    StatementResult result = session.run("MATCH (n:Customer) WHERE n.username = {username} AND n.password = {password} "
+                                    + "RETURN (n)"
+                            , Values.parameters("username" , username , "password" , password));
 
-            if (returnedJSON.equals("") || returnedJSON.equals("[]")) {
+                    // Check whether there was a result if not then the user either entered the wrong credentials or the user does not exist in the database
+                    // If true then add the credentials to the customer instance and then return to the loginActivity
+                    while (result.hasNext()) {
+                        Record record = result.next();
+                        Node node = record.values().get(0).asNode();
+
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+                        // Get the customer details from the node and add them to the customer instance
+                        Customer.getInstance().setUsername(username);
+                        Customer.getInstance().setPassword(password);
+                        Customer.getInstance().setUserId(node.get("_id").asString());
+                        Customer.getInstance().setFirstname(node.get("firstName").asString());
+                        Customer.getInstance().setLastname(node.get("lastName").asString());
+                        Customer.getInstance().setAddress(node.get("address").asString());
+                        Customer.getInstance().setCity(node.get("city").asString());
+                        Customer.getInstance().setCounty(node.get("county").asString());
+                        // Attempt to parse the date of birth of the user from the string given
+                        try {
+                            Customer.getInstance().setDateOfBirth(dateFormat.parse(node.get("dateOfBirth").asString()));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        Customer.getInstance().setEmailAddress(node.get("emailAddress").asString());
+                        Customer.getInstance().setMobileNumber(node.get("mobileNumber").asString());
+                        Customer.getInstance().setTelephoneNumber(node.get("telephoneNumber").asString());
+                    }
+
+                    // Task is complete so set the boolean to true to break the while loop
+                    isCompleted = true;
+                }
+            };
+            AsyncTask.execute(checkUserCredentials);
+
+            // Wait for the async task to complete before continuing, display the loading icon
+            while (isCompleted == false) {
+
+            }
+
+            if (Customer.getInstance().getUsername() == null && Customer.getInstance().getPassword() == null) {
+                isCompleted = false;
+                loadingIndicator.setVisibility(View.INVISIBLE);
                 Toast.makeText(this, "Incorrect username or password. Please try again.", Toast.LENGTH_SHORT).show();
             } else {
-                initiateCustomer();
-                asyncGetData.cancel(true);
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
-            asyncGetData.cancel(true);
         }
-    }
-
-    private void initiateCustomer() throws ParseException {
-        // Generate BSON document and and create a new customer to store the details
-        Document customerDetails = Document.parse(returnedJSON);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-        // Get values from BSON document and add to customer object then return customer
-        Customer.getInstance().setUserId(customerDetails.get("_id").toString());
-        Customer.getInstance().setUsername(customerDetails.get("username").toString());
-        Customer.getInstance().setPassword(customerDetails.get("password").toString());
-        Customer.getInstance().setFirstname(customerDetails.get("firstName").toString());
-        Customer.getInstance().setLastname(customerDetails.get("lastName").toString());
-        Customer.getInstance().setTypeOfUser(TypeOfUser.CUSTOMER);
-        Customer.getInstance().setDateOfBirth(dateFormat.parse(customerDetails.get("dateOfBirth").toString()));
-        Customer.getInstance().setAddress(customerDetails.get("address").toString());
-        Customer.getInstance().setCounty(customerDetails.get("county").toString());
-        Customer.getInstance().setCity(customerDetails.get("city").toString());
-        Customer.getInstance().setTelephoneNumber(customerDetails.get("telephoneNumber").toString());
-        Customer.getInstance().setMobileNumber(customerDetails.get("mobileNumber").toString());
-        Customer.getInstance().setEmailAddress(customerDetails.get("emailAddress").toString());
     }
 
     private boolean checkForPermissions() {
@@ -170,24 +211,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
-
-
-    //
-    // Check to see whether the login details entered by the user correspond to a record in the MongoDB database
-    //
-    public class asyncGetData extends AsyncTask<Object, Object, String> {
-        @Override
-        protected String doInBackground(Object... params) {
-                try {
-                    returnedJSON = APIConnection.getAPIData(urlToUse);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            return returnedJSON;
-        }
-    } //End of AsyncTask
 }

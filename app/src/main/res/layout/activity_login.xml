@@ -12,6 +12,18 @@
     android:background="@android:color/white"
     tools:context="com.example.elliot.automatedorderingsystem.Login.LoginActivity">
 
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/signInLoadingIndicator"
+        style="@style/AVLoadingIndicatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/editPostcode"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:visibility="invisible"
+        app:indicatorColor="@color/colorAccent"
+        app:indicatorName="BallPulseIndicator" />
+
     <Button
         android:text="@string/action_sign_in"
         android:layout_width="wrap_content"
