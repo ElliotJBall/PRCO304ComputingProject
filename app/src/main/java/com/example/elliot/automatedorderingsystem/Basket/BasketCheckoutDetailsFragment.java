@@ -195,6 +195,7 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
         objectToUse.put("customerFirstName", editFirstName.getText().toString());
         objectToUse.put("customerOrder", order);
         objectToUse.put("restaurant" , restaurant.getRestaurantName());
+        objectToUse.put("restaurantID", restaurant.getRestaurantId());
 
         // Disable all the elements from the VIEW and add the loading icon
         disableTextAndEditboxes();

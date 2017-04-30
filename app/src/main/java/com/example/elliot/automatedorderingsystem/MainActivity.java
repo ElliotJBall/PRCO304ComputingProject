@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private LocationManager locationManager;
     private LocationListener locationListener;
 
+    private ArrayAdapter<Restaurant> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             Location location = locationManager.getLastKnownLocation("gps");
             userLongitude = location.getLongitude();
             userLatitude = location.getLatitude();
+
         } catch (Exception e) {
 
         }
@@ -147,6 +150,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onLocationChanged(Location location) {
                 userLongitude = location.getLongitude();
                 userLatitude = location.getLatitude();
+
+                adapter = new RestaurantListAdapter();
+                ListView restaurantList = (ListView) findViewById(R.id.restaurantListView);
+                restaurantList.setAdapter(adapter);
             }
 
             @Override
@@ -228,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void populateRestaurantList() {
-        ArrayAdapter<Restaurant> adapter = new RestaurantListAdapter();
+        adapter = new RestaurantListAdapter();
         ListView restaurantList = (ListView) findViewById(R.id.restaurantListView);
         restaurantList.setAdapter(adapter);
     }
@@ -314,7 +321,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             // Fill the images and different TextViews here
 
             ImageView imageView = (ImageView) restaurantItemView.findViewById(R.id.imgRestaurant);
-
 
             TextView restaurantName = (TextView) restaurantItemView.findViewById(R.id.txtRestaurantName);
             restaurantName.setText(currentRestaurant.getRestaurantName());
