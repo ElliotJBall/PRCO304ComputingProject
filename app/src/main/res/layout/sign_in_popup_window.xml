@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtViewErrorNotSignedin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You need to have an account to view recommendations. Please sign in."
+        android:textAlignment="center"
+        android:textSize="26sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/btnSignInPopup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/txtViewErrorNotSignedin"
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="25dp"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorAccent"
+        android:text="Sign in / Register" />
+</RelativeLayout>

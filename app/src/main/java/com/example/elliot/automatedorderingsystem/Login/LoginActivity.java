@@ -3,7 +3,6 @@ package com.example.elliot.automatedorderingsystem.Login;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -14,15 +13,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
-import com.example.elliot.automatedorderingsystem.ClassLibrary.TypeOfUser;
-import com.example.elliot.automatedorderingsystem.MainActivity;
+import com.example.elliot.automatedorderingsystem.RestaurantAndMenu.MainActivity;
 import com.example.elliot.automatedorderingsystem.R;
 import com.wang.avi.AVLoadingIndicatorView;
 
-import org.bson.Document;
-import org.json.JSONException;
 import org.neo4j.driver.v1.AuthTokens;
 import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.GraphDatabase;
@@ -32,12 +27,9 @@ import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Values;
 import org.neo4j.driver.v1.types.Node;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutionException;
-
-import static org.neo4j.driver.v1.Values.parameters;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -61,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         grabUIElements();
 
         // Ensure that the loadingIndictor is set to invisible
-        loadingIndicator.setVisibility(View.INVISIBLE);
+        loadingIndicator.hide();
 
         // Check for user permissions - This must be done for later versions of android devices - application functionality is serverly hampered without the permisions
         checkForPermissions();
@@ -72,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Switch with cases for each button, get which button was pressed and run the appropriate code
         switch (v.getId()) {
             case R.id.btnSignIn:
-                loadingIndicator.setVisibility(View.VISIBLE);
+                loadingIndicator.show();
                 // Get the username and password
                 username = txtUsername.getText().toString();
                 password = txtPassword.getText().toString();
@@ -122,6 +114,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     // If there is a valid user create initialise the Mainactivity and open it
     private void checkSignIn() throws ParseException, ExecutionException, InterruptedException {
         if (txtUsername.getText().toString().isEmpty() == true || txtPassword.getText().toString().isEmpty() == true) {
+            loadingIndicator.hide();
             Toast.makeText(this, "Please enter your username and password", Toast.LENGTH_SHORT).show();
         } else {
             // Check the user credentials agaisnt the Neo4j database to check whether the user exists
@@ -176,7 +169,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             if (Customer.getInstance().getUsername() == null && Customer.getInstance().getPassword() == null) {
                 isCompleted = false;
-                loadingIndicator.setVisibility(View.INVISIBLE);
+                loadingIndicator.hide();
                 Toast.makeText(this, "Incorrect username or password. Please try again.", Toast.LENGTH_SHORT).show();
             } else {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));

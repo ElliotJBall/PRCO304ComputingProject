@@ -19,6 +19,8 @@ import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
 import com.example.elliot.automatedorderingsystem.R;
+import com.example.elliot.automatedorderingsystem.Recommendation.RecommendationActivity;
+import com.example.elliot.automatedorderingsystem.RestaurantAndMenu.MainActivity;
 import com.google.gson.Gson;
 
 import org.bson.BsonArray;
@@ -104,6 +106,8 @@ public class OrderHistoryActivity extends AppCompatActivity {
             case R.id.viewOrderHistory:
                 startActivity(new Intent(OrderHistoryActivity.this, OrderHistoryActivity.class));
                 break;
+            case R.id.viewRecommendations:
+                startActivity(new Intent(OrderHistoryActivity.this, RecommendationActivity.class));
             default:
                 break;
         }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainMenuID">
     <item
         android:id="@+id/basketIcon"
         android:icon="@drawable/shoppingcart"
@@ -21,6 +22,7 @@
             <item
                 android:id="@+id/viewAccount"
                 android:icon="@drawable/accounticon"
+                android:textColor="@color/colorWhite"
                 android:title="View Account"
                 app:showAsAction="always">
             </item>
@@ -28,6 +30,14 @@
                 android:id="@+id/viewOrderHistory"
                 android:icon="@drawable/orderhistory"
                 android:title="Order history"
+                android:textColor="@color/colorWhite"
+                app:showAsAction="always">
+            </item>
+            <item
+                android:id="@+id/viewRecommendations"
+                android:icon="@drawable/recommendation"
+                android:title="View Recommendations"
+                android:textColor="@color/colorWhite"
                 app:showAsAction="always">
             </item>
         </menu>

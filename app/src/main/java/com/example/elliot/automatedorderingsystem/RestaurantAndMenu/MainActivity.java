@@ -1,4 +1,4 @@
-package com.example.elliot.automatedorderingsystem;
+package com.example.elliot.automatedorderingsystem.RestaurantAndMenu;
 
 import android.Manifest;
 import android.content.Intent;
@@ -24,11 +24,14 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
 import com.example.elliot.automatedorderingsystem.OrderHistory.OrderHistoryActivity;
+import com.example.elliot.automatedorderingsystem.R;
+import com.example.elliot.automatedorderingsystem.Recommendation.RecommendationActivity;
 
 import org.bson.Document;
 import org.json.JSONArray;
@@ -116,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.viewOrderHistory:
                 startActivity(new Intent(MainActivity.this, OrderHistoryActivity.class));
                 break;
+            case R.id.viewRecommendations:
+                startActivity(new Intent(MainActivity.this, RecommendationActivity.class));
             default:
                 break;
         }
@@ -148,12 +153,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                // Update the customers longitude and latitude
                 userLongitude = location.getLongitude();
                 userLatitude = location.getLatitude();
 
-                adapter = new RestaurantListAdapter();
-                ListView restaurantList = (ListView) findViewById(R.id.restaurantListView);
-                restaurantList.setAdapter(adapter);
+                customerLocation.setLongitude(userLongitude);
+                customerLocation.setLatitude(userLatitude);
+
+                // Loop through all the restaurants in the list and then recalculate the distance to the user as the users location has changed
+                for (Restaurant currentRestaurant : allRestaurants) {
+                    currentRestaurant.calculateRestaurantDistance(customerLocation, currentRestaurant);
+                }
+
+                // Notify that the dataset has changed so it is redrawn
+                // The adapter has to be recreated as the locations to the restaurants will have changed
+                adapter.notifyDataSetChanged();
+                populateRestaurantList();
             }
 
             @Override
@@ -238,6 +253,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         adapter = new RestaurantListAdapter();
         ListView restaurantList = (ListView) findViewById(R.id.restaurantListView);
         restaurantList.setAdapter(adapter);
+
+
     }
 
     private void registerRestaurantListClick() {
@@ -245,13 +262,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         restaurantListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Restaurant selectedRestaurant = allRestaurants.get(position);
+                Restaurant selectedRestaurant = allRestaurants.get(position - 1);
 
                 Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
                 intent.putExtra("restaurant", selectedRestaurant);
                 startActivity(intent);
             }
         });
+
+        TextView listViewHeader = new TextView(this);
+        listViewHeader.setText("List Of Restauants");
+        restaurantListView.addHeaderView(listViewHeader);
     }
 
     @Override
@@ -362,28 +383,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 e.printStackTrace();
             }
 
-            // Find the restaurantDistance textview and set the distance to the user
-            // Create variables to hold the restaurants LONGITUDE + LATITUDE
-            // Create float variable to hold the distance between the two objects
-            double restaurantLongitude = 0.00, restaurantLatitude = 0.00;
+            // Calculate the distance to the user from the restaurant and location given
+            currentRestaurant.calculateRestaurantDistance(customerLocation, currentRestaurant);
 
-            // Create a new Location object so the restaurant long+lat can be assigned to it
-            Location restaurantLocation = new Location("");
-
-            // Calculate the distance between the restaurants and the user
-            restaurantLongitude = Double.parseDouble(currentRestaurant.getLongitude());
-            restaurantLatitude = Double.parseDouble(currentRestaurant.getLatitude());
-
-            // Set the location objects longitude and latitude to that of the restaurants
-            restaurantLocation.setLongitude(restaurantLongitude);
-            restaurantLocation.setLatitude(restaurantLatitude);
-
-            // This returns the distance to the user in meters - this is required to sort the restaurants into closest first.
-            currentRestaurant.setDistanceToUser(customerLocation.distanceTo(restaurantLocation));
-            // Format the string into miles
-            float distanceInMiles = currentRestaurant.getDistanceToUser() * 0.000621371192f;
             // Convert to BIGDECIMAL as float wasnt being displayed correctly
-            BigDecimal distanceFinal = new BigDecimal(distanceInMiles).setScale(2, BigDecimal.ROUND_HALF_UP);
+            BigDecimal distanceFinal = new BigDecimal(currentRestaurant.getDistanceToUser()).setScale(2, BigDecimal.ROUND_HALF_UP);
 
             // Find the textview and set the value
             TextView restaurantDistanceToUser = (TextView) restaurantItemView.findViewById(R.id.txtRestuarantDistance);

@@ -20,7 +20,7 @@
         android:layout_alignTop="@+id/editPostcode"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:indicatorColor="@color/colorAccent"
         app:indicatorName="BallPulseIndicator" />
 

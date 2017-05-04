@@ -1,4 +1,4 @@
-package com.example.elliot.automatedorderingsystem;
+package com.example.elliot.automatedorderingsystem.RestaurantAndMenu;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,11 +13,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
 import com.example.elliot.automatedorderingsystem.OrderHistory.OrderHistoryActivity;
+import com.example.elliot.automatedorderingsystem.R;
+import com.example.elliot.automatedorderingsystem.Recommendation.RecommendationActivity;
 
 import org.bson.Document;
 import org.json.JSONArray;
@@ -34,7 +37,7 @@ public class RestaurantActivity extends AppCompatActivity {
     protected Restaurant restaurant;
     protected ArrayList<Food> menu = new ArrayList<Food>();
 
-    private APIConnection APIConnection = new APIConnection();
+    private com.example.elliot.automatedorderingsystem.APIConnection APIConnection = new APIConnection();
     private asyncGetData asyncGetData;
     private String urlToUse, returnedJSON = "";
     private MenuItem menuItem;
@@ -97,6 +100,8 @@ public class RestaurantActivity extends AppCompatActivity {
             case R.id.viewOrderHistory:
                 startActivity(new Intent(RestaurantActivity.this, OrderHistoryActivity.class));
                 break;
+            case R.id.viewRecommendations:
+                startActivity(new Intent(RestaurantActivity.this, RecommendationActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

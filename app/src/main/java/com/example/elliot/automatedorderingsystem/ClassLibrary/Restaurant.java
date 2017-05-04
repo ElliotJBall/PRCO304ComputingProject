@@ -4,6 +4,7 @@ import android.location.Location;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
@@ -139,6 +140,30 @@ public class Restaurant implements Serializable, Comparable<Restaurant> {
         } else {
             return 0;
         }
+    }
+
+    public void calculateRestaurantDistance(Location customerLocation, Restaurant currentRestaurant) {
+        // Find the restaurantDistance textview and set the distance to the user
+        // Create variables to hold the restaurants LONGITUDE + LATITUDE
+        // Create float variable to hold the distance between the two objects
+        double restaurantLongitude = 0.00, restaurantLatitude = 0.00;
+
+        // Create a new Location object so the restaurant long+lat can be assigned to it
+        Location restaurantLocation = new Location("");
+
+        // Calculate the distance between the restaurants and the user
+        restaurantLongitude = Double.parseDouble(currentRestaurant.getLongitude());
+        restaurantLatitude = Double.parseDouble(currentRestaurant.getLatitude());
+
+        // Set the location objects longitude and latitude to that of the restaurants
+        restaurantLocation.setLongitude(restaurantLongitude);
+        restaurantLocation.setLatitude(restaurantLatitude);
+
+        // This returns the distance to the user in meters - this is required to sort the restaurants into closest first.
+        currentRestaurant.setDistanceToUser(customerLocation.distanceTo(restaurantLocation));
+        // Format the string into miles
+        float distanceInMiles = currentRestaurant.getDistanceToUser() * 0.000621371192f;
+        distanceToUser = distanceInMiles;
     }
 
 }

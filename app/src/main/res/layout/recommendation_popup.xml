@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/recommendationRestaurantImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:maxHeight="80dp"
+        android:maxWidth="80dp"
+        android:paddingRight="25dp"
+        android:paddingTop="5dp"
+        app:srcCompat="@drawable/photo"
+        android:layout_alignParentStart="true"
+        tools:layout_editor_absoluteY="42dp"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
+        android:id="@+id/recommendationRestaurantName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Restaurant Name here"
+        android:textSize="20dp"
+        tools:layout_editor_absoluteY="42dp"
+        tools:layout_editor_absoluteX="99dp" />
+
+    <TextView
+        android:id="@+id/recommendationRestaurantOpeningClosingTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Opening + Closing time"
+        tools:layout_editor_absoluteY="73dp"
+        tools:layout_editor_absoluteX="99dp" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtRestaurantName"
+        android:layout_toEndOf="@+id/imgRestaurant"
+        android:numStars="5"
+        tools:layout_editor_absoluteX="99dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintTop_toBottomOf="@+id/recommendationRestaurantOpeningClosingTime" />
+
+    <TextView
+        android:id="@+id/recommendationRestaurantDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txtOpeningTime"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
+        android:drawableLeft="@drawable/locationmarker"
+        android:drawablePadding="5dp"
+        android:paddingRight="5dp"
+        android:text="0.00 Miles"
+        tools:layout_editor_absoluteY="66dp"
+        tools:layout_editor_absoluteX="282dp" />
+
+    <TextView
+        android:id="@+id/recommendationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recommended Restaurant:"
+        tools:layout_editor_absoluteX="108dp"
+        tools:layout_editor_absoluteY="16dp" />
+</android.support.constraint.ConstraintLayout>

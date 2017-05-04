@@ -21,7 +21,7 @@ import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.OrderStatus;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
-import com.example.elliot.automatedorderingsystem.MainActivity;
+import com.example.elliot.automatedorderingsystem.RestaurantAndMenu.MainActivity;
 import com.example.elliot.automatedorderingsystem.OrderHistory.OrderHistoryActivity;
 import com.example.elliot.automatedorderingsystem.R;
 import com.google.gson.Gson;
@@ -32,7 +32,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 

@@ -3,6 +3,7 @@ package com.example.elliot.automatedorderingsystem.Login;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,12 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
-import com.example.elliot.automatedorderingsystem.MainActivity;
+import com.example.elliot.automatedorderingsystem.RestaurantAndMenu.MainActivity;
 import com.example.elliot.automatedorderingsystem.R;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.bson.types.ObjectId;
+import org.json.JSONException;
 import org.neo4j.driver.v1.AuthTokens;
 import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.GraphDatabase;
@@ -37,6 +40,10 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
     private Button btnRegister;
     private boolean doesExist = false;
     private AVLoadingIndicatorView loadingIndicatorView;
+
+    private String returnedJSON = "", urlToUse = "";
+    private APIConnection APIConnection = new APIConnection();
+    private asyncGetData asyncGetData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +69,7 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
         editDateOfBirth = (EditText) findViewById(R.id.editDateOfBirth);
 
         editAddress = (EditText) findViewById(R.id.editAddress);
-        editPostcode = (EditText) findViewById(R.id.editAddress);
+        editPostcode = (EditText) findViewById(R.id.editPostcode);
         editTelephoneNumber = (EditText) findViewById(R.id.editTelephoneNumber);
         editMobileNumber = (EditText) findViewById(R.id.editMobileNumber);
         editEmailAddress = (EditText) findViewById(R.id.editEmailAddress);
@@ -123,9 +130,13 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
             // Use the address inserted to get the county and city of the user
             getUsersAddressDetails();
 
-            // Add the user into the database then redirect them to a new activity
-            insertUserIntoDatabase();
-
+            // Check the correct location was gathered, if it's null no city or country gathered so don't continue
+            if (city == null) {
+                loadingIndicatorView.setVisibility(View.INVISIBLE);
+            } else {
+                // Add the user into the database then redirect them to a new activity
+                insertUserIntoDatabase();
+            }
 
         } else {
             loadingIndicatorView.setVisibility(View.INVISIBLE);
@@ -142,12 +153,22 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
         // Create a list of addresses to hold the addresses returned from the geocoder
         // If the listOfAddresses is not null then get the first address and use the locality and set it to county
         try {
-            List<Address> listOfAddresses = geocoder.getFromLocationName(address, 1);
+            List<Address> listOfAddresses = geocoder.getFromLocationName(postcode, 100);
 
+            // Remove the house number from the string to check against the geocoders first part of address line
+            String temporaryAddressName = address.replaceAll("[0-9]", "");
+            temporaryAddressName = temporaryAddressName.substring(1, temporaryAddressName.length());
+
+            // Loop through all the possible addresses and check to see whether one addres has a match with the postcode they entered
             if (listOfAddresses != null || listOfAddresses.size() > 0) {
-                if (!listOfAddresses.get(0).getLocality().equals("") || listOfAddresses.get(0).getLocality() != null) {
-                    city = listOfAddresses.get(0).getLocality();
-                    countyName = listOfAddresses.get(0).getCountryName();
+                for (Address currentAddress : listOfAddresses) {
+                    if (currentAddress.getAddressLine(0).toUpperCase().equals(temporaryAddressName.toUpperCase())) {
+                        if (!listOfAddresses.get(0).getLocality().equals("") || listOfAddresses.get(0).getLocality() != null) {
+                            city = listOfAddresses.get(0).getLocality();
+                            countyName = listOfAddresses.get(0).getCountryName();
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -155,6 +176,8 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
             Toast.makeText(this, "Error getting your location, please ensure the correct permissions are granted.", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     private boolean checkUsernameDoesntExist(final String username) throws InterruptedException {
         // Create and run on the new thread to ensure the application doesnt bomb trying to run on the mainUI thread
@@ -199,7 +222,8 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
                 // Statement to insert the new user into the database
                 session.run("CREATE (n:Customer {_id: {_id}, username: {username}, password: {password}, " +
                                 "firstName: {firstName}, lastName: {lastName}, dateOfBirth: {dateOfBirth}, address: {address}, " +
-                                "telephoneNumber: {telephoneNumber}, mobileNumber: {mobileNumber}, postcode: {postcode}})" ,
+                                "telephoneNumber: {telephoneNumber}, mobileNumber: {mobileNumber}, postcode: {postcode}, city: {city}" +
+                                ", countryName: {countryName}, emailAddress: {emailAddress} })" ,
                         Values.parameters("_id", _id, "username", username, "password", password, "firstName", firstName, "lastName", lastName,
                                 "dateOfBirth", dateOfBirth, "address", address, "telephoneNumber", telephoneNumber, "mobileNumber", mobileNumber,
                                 "emailAddress", emailAddress, "postcode", postcode, "city", city, "countryName", countyName));
@@ -248,7 +272,8 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
                     try {
                         getDataFromEditTexts();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        loadingIndicatorView.setVisibility(View.INVISIBLE);
+                        Toast.makeText(this, "Error creating account, Please check all the information required has been filled out.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     loadingIndicatorView.setVisibility(View.INVISIBLE);
@@ -257,5 +282,30 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
             default:
                 break;
         }
+    }
+
+    public class asyncGetData extends AsyncTask<Object, Object, String> {
+        @Override
+        protected String doInBackground(Object... params) {
+            try {
+                Thread.sleep(1000);
+                returnedJSON = APIConnection.getAPIData(urlToUse);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return returnedJSON;
+        }
+    } //End of AsyncTask
+
+    @Override
+    public void onResume() {
+        // If the user presses the back button you must update the order total on the previous activity
+        super.onResume();
     }
 }

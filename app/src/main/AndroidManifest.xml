@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/ApplicationTheme">
-        <activity android:name=".MainActivity" />
+        <activity android:name=".RestaurantAndMenu.MainActivity" />
         <activity android:name=".Login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,10 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RestaurantActivity" />
+        <activity android:name=".RestaurantAndMenu.RestaurantActivity" />
         <activity android:name=".Basket.BasketActivity" />
         <activity android:name=".OrderHistory.OrderHistoryActivity" />
-        <activity android:name=".Login.RegisterCustomerActivity"></activity>
+        <activity android:name=".Login.RegisterCustomerActivity" />
+        <activity android:name=".Recommendation.RecommendationActivity"></activity>
     </application>
 
 </manifest>
