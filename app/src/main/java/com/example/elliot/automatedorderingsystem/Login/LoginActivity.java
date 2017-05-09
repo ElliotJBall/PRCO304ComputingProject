@@ -149,6 +149,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Customer.getInstance().setAddress(node.get("address").asString());
                         Customer.getInstance().setCity(node.get("city").asString());
                         Customer.getInstance().setCounty(node.get("county").asString());
+                        Customer.getInstance().setPostcode(node.get("postcode").asString());
                         // Attempt to parse the date of birth of the user from the string given
                         try {
                             Customer.getInstance().setDateOfBirth(dateFormat.parse(node.get("dateOfBirth").asString()));

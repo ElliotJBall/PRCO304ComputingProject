@@ -20,6 +20,12 @@
 
         <menu>
             <item
+                android:id="@+id/viewAllRestaurants"
+                android:icon="@drawable/viewallrestaurants"
+                android:title="View all restaurants"
+                app:showAsAction="always">
+            </item>
+            <item
                 android:id="@+id/viewAccount"
                 android:icon="@drawable/accounticon"
                 android:textColor="@color/colorWhite"
@@ -38,6 +44,12 @@
                 android:icon="@drawable/recommendation"
                 android:title="View Recommendations"
                 android:textColor="@color/colorWhite"
+                app:showAsAction="always">
+            </item>
+            <item
+                android:id="@+id/signOut"
+                android:icon="@drawable/signout"
+                android:title="Logout"
                 app:showAsAction="always">
             </item>
         </menu>

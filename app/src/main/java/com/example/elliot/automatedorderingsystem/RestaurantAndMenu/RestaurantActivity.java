@@ -12,12 +12,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
+import com.example.elliot.automatedorderingsystem.Login.LoginActivity;
 import com.example.elliot.automatedorderingsystem.OrderHistory.OrderHistoryActivity;
 import com.example.elliot.automatedorderingsystem.R;
 import com.example.elliot.automatedorderingsystem.Recommendation.RecommendationActivity;
@@ -53,12 +55,8 @@ public class RestaurantActivity extends AppCompatActivity {
         // Get the items on the menu, add them to array and set the array
         try {
             getMenu();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Toast.makeText(getWindow().getContext(), "Error getting the restaurants menu. Please try again.", Toast.LENGTH_SHORT).show();
         }
 
         // Get the updated array menu and add the elements to the listview
@@ -102,6 +100,13 @@ public class RestaurantActivity extends AppCompatActivity {
                 break;
             case R.id.viewRecommendations:
                 startActivity(new Intent(RestaurantActivity.this, RecommendationActivity.class));
+                break;
+            case R.id.viewAllRestaurants:
+                startActivity(new Intent(RestaurantActivity.this, MainActivity.class));
+                break;
+            case R.id.signOut:
+                startActivity(new Intent(RestaurantActivity.this, LoginActivity.class));
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

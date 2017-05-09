@@ -17,8 +17,11 @@ import android.widget.TextView;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
+import com.example.elliot.automatedorderingsystem.Login.LoginActivity;
 import com.example.elliot.automatedorderingsystem.OrderHistory.OrderHistoryActivity;
 import com.example.elliot.automatedorderingsystem.R;
+import com.example.elliot.automatedorderingsystem.Recommendation.RecommendationActivity;
+import com.example.elliot.automatedorderingsystem.RestaurantAndMenu.MainActivity;
 
 import java.util.Collections;
 
@@ -83,6 +86,15 @@ public class BasketActivity extends AppCompatActivity implements View.OnClickLis
         switch (item.getItemId()) {
             case R.id.viewOrderHistory:
                 startActivity(new Intent(BasketActivity.this, OrderHistoryActivity.class));
+                break;
+            case R.id.viewRecommendations:
+                startActivity(new Intent(BasketActivity.this, RecommendationActivity.class));
+                break;
+            case R.id.viewAllRestaurants:
+                startActivity(new Intent(BasketActivity.this, MainActivity.class));
+                break;
+            case R.id.signOut:
+                startActivity(new Intent(BasketActivity.this, LoginActivity.class));
                 break;
             default:
                 break;

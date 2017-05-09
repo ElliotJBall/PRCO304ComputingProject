@@ -29,6 +29,7 @@ import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
+import com.example.elliot.automatedorderingsystem.Login.LoginActivity;
 import com.example.elliot.automatedorderingsystem.OrderHistory.OrderHistoryActivity;
 import com.example.elliot.automatedorderingsystem.R;
 import com.example.elliot.automatedorderingsystem.Recommendation.RecommendationActivity;
@@ -121,6 +122,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 break;
             case R.id.viewRecommendations:
                 startActivity(new Intent(MainActivity.this, RecommendationActivity.class));
+                break;
+            case R.id.viewAllRestaurants:
+                startActivity(new Intent(MainActivity.this, MainActivity.class));
+                break;
+            case R.id.signOut:
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                break;
             default:
                 break;
         }
@@ -165,10 +173,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     currentRestaurant.calculateRestaurantDistance(customerLocation, currentRestaurant);
                 }
 
-                // Notify that the dataset has changed so it is redrawn
-                // The adapter has to be recreated as the locations to the restaurants will have changed
-                adapter.notifyDataSetChanged();
-                populateRestaurantList();
+                if (adapter != null) {
+                    // Notify that the dataset has changed so it is redrawn
+                    // The adapter has to be recreated as the locations to the restaurants will have changed
+                    adapter.notifyDataSetChanged();
+                    populateRestaurantList();
+                }
+
             }
 
             @Override

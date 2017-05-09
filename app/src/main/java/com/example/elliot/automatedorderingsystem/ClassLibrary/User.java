@@ -22,6 +22,15 @@ public abstract class User implements IUser, Serializable {
     protected String mobileNumber;
     protected String emailAddress;
     protected Order userOrder = new Order();
+    protected String postcode;
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
 
     public Order getUserOrder() {
         return userOrder;

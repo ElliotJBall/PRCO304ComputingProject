@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RatingBar
+        android:id="@+id/txtRecommendedRestaurantRating"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:layout_alignBottom="@+id/imgRecommendedRestaurant"
+        android:layout_alignStart="@+id/txtViewRecommendedOpeningTime"
+        android:layout_alignEnd="@+id/txtViewRecommendedClosingTime" />
+
+    <TextView
+        android:id="@+id/txtViewRestaurantRecommendedName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtViewRestaurantRecommendationText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="5dp"
+        android:text="Restaurant Name"
+        android:textAlignment="center"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/imgRecommendedRestaurant"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:maxHeight="80dp"
+        android:maxWidth="80dp"
+        app:srcCompat="@drawable/photo"
+        tools:layout_editor_absoluteX="28dp"
+        tools:layout_editor_absoluteY="83dp"
+        android:layout_marginEnd="13dp"
+        android:layout_alignTop="@+id/txtViewRestaurantRecommendedName"
+        android:layout_toStartOf="@+id/txtViewRestaurantRecommendedName" />
+
+    <TextView
+        android:id="@+id/txtViewRecommendedClosingTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="102dp"
+        android:text="21:00"
+        android:textSize="16sp"
+        tools:layout_editor_absoluteY="116dp"
+        android:layout_alignBottom="@+id/imgRestaurantMarker"
+        android:layout_alignEnd="@+id/txtViewRestaurantRecommendedName" />
+
+    <Button
+        android:id="@+id/btnViewRecommendedRestaurant"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:background="@color/colorAccent"
+        android:text="View Restaurant"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_editor_absoluteY="202dp"
+        android:layout_alignTop="@+id/btnNextRecommendation"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="12dp" />
+
+    <Button
+        android:id="@+id/btnNextRecommendation"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="40dp"
+        android:background="@color/colorAccent"
+        android:text="Next Recommendation"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteY="202dp"
+        android:layout_marginTop="26dp"
+        android:layout_below="@+id/txtRecommendedRestaurantRating"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/txtViewRestaurantRecommendationText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="People similar to you ordered from:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/txtViewRecommendedOpeningTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="14:00"
+        android:textSize="16sp"
+        android:layout_alignBottom="@+id/imgRestaurantMarker"
+        android:layout_alignStart="@+id/txtViewRestaurantRecommendedName" />
+
+    <ImageView
+        android:id="@+id/imgRestaurantMarker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/locationmarker"
+        android:layout_below="@+id/txtViewRestaurantRecommendedName"
+        android:layout_toStartOf="@+id/txtRecommendedRestaurantDistance" />
+
+    <TextView
+        android:id="@+id/txtRecommendedRestaurantDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/imgRestaurantMarker"
+        android:text="0.00 Miles"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        android:paddingRight="5dp"/>
+
+</RelativeLayout>

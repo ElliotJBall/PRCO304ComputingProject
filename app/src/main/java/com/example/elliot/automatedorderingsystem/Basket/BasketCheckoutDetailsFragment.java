@@ -52,7 +52,7 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
     private AVLoadingIndicatorView loadingIndicator;
 
     // EditTexts for all the fragments parts, need to get these to get and set data
-    private EditText editFirstName, editSurname, editAddress, editTelephoneNumber, editMobileNumber, editEmailAddress;
+    private EditText editFirstName, editSurname, editAddress, editTelephoneNumber, editMobileNumber, editEmailAddress, editPostcode;
 
     public BasketCheckoutDetailsFragment() {
         // Required empty public constructor
@@ -127,6 +127,7 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
         editTelephoneNumber = (EditText) rootView.findViewById(R.id.editTelephoneNumber);
         editMobileNumber = (EditText) rootView.findViewById(R.id.editMobileNumber);
         editEmailAddress = (EditText) rootView.findViewById(R.id.editEmailAddress);
+        editPostcode = (EditText) rootView.findViewById(R.id.editPostcode);
     }
 
     private void addCustomerAccountDetails() {
@@ -137,6 +138,7 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
         editTelephoneNumber.setText(Customer.getInstance().getTelephoneNumber());
         editMobileNumber.setText(Customer.getInstance().getMobileNumber());
         editEmailAddress.setText(Customer.getInstance().getEmailAddress());
+        editPostcode.setText(Customer.getInstance().getPostcode());
     }
 
     private boolean checkEditTextBoxes() {

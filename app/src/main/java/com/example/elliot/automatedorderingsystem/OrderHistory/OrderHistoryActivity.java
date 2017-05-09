@@ -18,6 +18,7 @@ import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
+import com.example.elliot.automatedorderingsystem.Login.LoginActivity;
 import com.example.elliot.automatedorderingsystem.R;
 import com.example.elliot.automatedorderingsystem.Recommendation.RecommendationActivity;
 import com.example.elliot.automatedorderingsystem.RestaurantAndMenu.MainActivity;
@@ -108,6 +109,13 @@ public class OrderHistoryActivity extends AppCompatActivity {
                 break;
             case R.id.viewRecommendations:
                 startActivity(new Intent(OrderHistoryActivity.this, RecommendationActivity.class));
+                break;
+            case R.id.viewAllRestaurants:
+                startActivity(new Intent(OrderHistoryActivity.this, MainActivity.class));
+                break;
+            case R.id.signOut:
+                startActivity(new Intent(OrderHistoryActivity.this, LoginActivity.class));
+                break;
             default:
                 break;
         }

@@ -28,8 +28,10 @@ import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Values;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -132,6 +134,7 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
 
             // Check the correct location was gathered, if it's null no city or country gathered so don't continue
             if (city == null) {
+                Toast.makeText(this, "Error getting location, please try again.", Toast.LENGTH_SHORT).show();
                 loadingIndicatorView.setVisibility(View.INVISIBLE);
             } else {
                 // Add the user into the database then redirect them to a new activity
@@ -242,8 +245,6 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
                 // If it is true the user was successfully created, add the data to the customer instance and continue
                 initialiseCustomerInstance();
 
-                // Create a popup to indicate the user creating their account was successful, provide option to continue onto main activity
-
                 startActivity(new Intent(RegisterCustomerActivity.this, MainActivity.class));
             } else {
                 Toast.makeText(this, "Error creating account, please try again.", Toast.LENGTH_SHORT).show();
@@ -256,9 +257,27 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
 
     private void initialiseCustomerInstance() {
         // Add the strings to the customer instance and then return
-        Customer.getInstance().setUserId(_id);
-        Customer.getInstance().setUsername(username);
-        Customer.getInstance().setPassword(password);
+
+        DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy");
+        try {
+             Date customerDateOfBirth = dateFormat.parse(dateOfBirth);
+
+            Customer.getInstance().setUserId(_id);
+            Customer.getInstance().setUsername(username);
+            Customer.getInstance().setPassword(password);
+            Customer.getInstance().setFirstname(firstName);
+            Customer.getInstance().setLastname(lastName);
+            Customer.getInstance().setDateOfBirth(customerDateOfBirth);
+            Customer.getInstance().setAddress(address);
+            Customer.getInstance().setCity(city);
+            Customer.getInstance().setTelephoneNumber(telephoneNumber);
+            Customer.getInstance().setMobileNumber(mobileNumber);
+            Customer.getInstance().setEmailAddress(emailAddress);
+            Customer.getInstance().setPostcode(postcode);
+        } catch (ParseException e) {
+            Toast.makeText(this, "Error getting date of birth. Please try again.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
