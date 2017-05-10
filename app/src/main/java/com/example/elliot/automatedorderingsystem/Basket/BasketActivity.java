@@ -9,8 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -44,13 +47,33 @@ public class BasketActivity extends AppCompatActivity implements View.OnClickLis
         btnCheckout = (Button) findViewById(R.id.btnCheckout);
         basketListView = (ListView) findViewById(R.id.basketListView);
 
+        basketListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the piece of food that was selected and remove it from the customers orders
+                // Redraw the list to ensure it's removed from the listview
+                Food foodToRemove = (Food) basketListView.getAdapter().getItem(position);
+                Customer.getInstance().getUserOrder().getFoodOrdered().remove(foodToRemove);
+
+                // Recalculate the total price of the users basket
+                Customer.getInstance().getUserOrder().calculateTotalPrice(Customer.getInstance().getUserOrder().getFoodOrdered());
+
+                if (menuItem != null) {
+                    menuItem.setTitle("£" + String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
+                    orderTotal.setText("Total:  £" + String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
+                }
+
+                ((BaseAdapter) basketListView.getAdapter()).notifyDataSetChanged();
+            }
+        });
+
         // Get the restaurant that was serialized so it can be passed to the checkout fragment
         if (getIntent().getSerializableExtra("restaurant") != null) {
             restaurant = (Restaurant) getIntent().getSerializableExtra("restaurant");
         }
 
         // Set the currentTotal text to the customers order total
-        orderTotal.setText("£" + String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
+        orderTotal.setText("Total:  £" + String.format("%.2f", Customer.getInstance().getUserOrder().getTotalPrice()));
         // Set the button onClickListener to check when the user wants to complete their order
         btnCheckout.setOnClickListener(this);
 
@@ -149,22 +172,24 @@ public class BasketActivity extends AppCompatActivity implements View.OnClickLis
             }
 
             // Create the variables for the food and select it from the correct Ojbect (Customer / Guest)
-            // Create INT for occurnces to see how many of that object the user has ordered
-            Food currentFood = new Food();
-            int occurnces = 1;
+            // Create INT for occurences to see how many of that object the user has ordered
+            int occurrences = 1;
 
-            currentFood = Customer.getInstance().getUserOrder().getFoodOrdered().get(position);
-            occurnces = Collections.frequency(Customer.getInstance().getUserOrder().getFoodOrdered(), currentFood);
+            Food currentFood = Customer.getInstance().getUserOrder().getFoodOrdered().get(position);
+            occurrences = Collections.frequency(Customer.getInstance().getUserOrder().getFoodOrdered(), currentFood);
 
             // Fill the text views with the information gathered from the current food object
             TextView foodName = (TextView) orderItemView.findViewById(R.id.txtFoodName);
             foodName.setText(currentFood.getFoodName());
 
             TextView foodQuantity = (TextView) orderItemView.findViewById(R.id.txtQuantity);
-            foodQuantity.setText(String.valueOf(occurnces));
+            foodQuantity.setText("1");
 
             TextView foodPrice = (TextView) orderItemView.findViewById(R.id.txtFoodPrice);
             foodPrice.setText(String.valueOf("£" + currentFood.getPrice()));
+
+            ImageView deleteFoodImage = (ImageView) orderItemView.findViewById(R.id.imgDeleteFood);
+            deleteFoodImage.setVisibility(View.VISIBLE);
 
             return orderItemView;
         }

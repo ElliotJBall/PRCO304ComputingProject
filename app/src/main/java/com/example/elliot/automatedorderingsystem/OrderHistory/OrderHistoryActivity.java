@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
@@ -63,15 +64,12 @@ public class OrderHistoryActivity extends AppCompatActivity {
             // Run the APIConnection method to get the required data to display the users orders
             try {
                 getCustomersOrders();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Toast.makeText(this, "Error getting order history, please try again.", Toast.LENGTH_SHORT).show();
             }
 
-            // Check if the arrays are empty- if they are display the nocurrentOrders frament instead of empty listViews
+
+                // Check if the arrays are empty- if they are display the nocurrentOrders frament instead of empty listViews
             if (currentCustomerOrders.isEmpty() && previousCustomerOrders.isEmpty()) {
                 disableAllElements();
                 getSupportFragmentManager().beginTransaction().add(R.id.orderHistoryFragmentContainer, new OrderHistoryEmptyFragment()).commit();
@@ -262,7 +260,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
 
     private class PreviousOrderListAdapter extends ArrayAdapter<Order> {
         public PreviousOrderListAdapter() {
-            super(OrderHistoryActivity.this, R.layout.order_view, currentCustomerOrders);
+            super(OrderHistoryActivity.this, R.layout.order_view, previousCustomerOrders);
         }
 
         @Override
@@ -298,7 +296,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
 
             // Set the current status of the order here
             TextView orderStatus = (TextView) currentOrderItemView.findViewById(R.id.txtOrderStatus);
-            orderStatus.setText(currentCustomerOrders.get(position).getOrderStatus().toString());
+            orderStatus.setText(previousCustomerOrders.get(position).getOrderStatus().toString());
 
             return currentOrderItemView;
         }

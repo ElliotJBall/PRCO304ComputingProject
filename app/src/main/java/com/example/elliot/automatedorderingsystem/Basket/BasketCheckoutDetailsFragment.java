@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
+import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.OrderStatus;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
 import com.example.elliot.automatedorderingsystem.RestaurantAndMenu.MainActivity;
@@ -205,6 +206,12 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
         asyncGetData = new asyncGetData();
         asyncGetData.execute().get();
         asyncGetData.cancel(true);
+
+        // If the order was successfully inserted into the database remove it from the user order and in turn remove it from the basket
+        if (responseCode == 201) {
+            Order newCustomerOrder = new Order();
+            Customer.getInstance().setUserOrder(newCustomerOrder);
+        }
 
         // Wait three seconds - Check whether the insert was successful and if it was load new activity and display the order
         Handler handler = new Handler();
