@@ -120,7 +120,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             final Thread checkUserCredentials = new Thread() {
                 @Override
                 public void run() {
-                    Driver driver = GraphDatabase.driver("bolt://10.0.2.2:7687" , AuthTokens.basic("neo4j" , "password"));
+                    Driver driver = GraphDatabase.driver("bolt://192.168.0.4:7687" , AuthTokens.basic("neo4j" , "password"));
 
                     Session session = driver.session();
 

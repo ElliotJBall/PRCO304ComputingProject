@@ -174,7 +174,7 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
         String order = new Gson().toJson(Customer.getInstance().getUserOrder());
 
         // Set the URL to the currentOrders database
-        urlToUse = "http://10.0.2.2:8080/order/currentOrders/";
+        urlToUse = "http://192.168.0.4:8080/order/currentOrders/";
 
         // Create the JSON object and put required fields
         objectToUse = new JSONObject();

@@ -64,6 +64,14 @@ public class BasketActivity extends AppCompatActivity implements View.OnClickLis
                 }
 
                 ((BaseAdapter) basketListView.getAdapter()).notifyDataSetChanged();
+
+                // Check if the customers order is empty - if empty display empty basket sign ect
+                // IF statement checks if order array is empty - if true then display the empty basket - false means get the first fragment and display it
+                if (Customer.getInstance().getUserOrder().getFoodOrdered().isEmpty()) {
+                    // Order total is empty - disable all elements and display the fragment which shows an empty basket
+                    disableBasketElements();
+                    getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, new BasketCheckoutEmptyFragment()).commit();
+                }
             }
         });
 

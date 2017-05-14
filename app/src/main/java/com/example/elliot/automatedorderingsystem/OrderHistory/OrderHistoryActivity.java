@@ -123,7 +123,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
     private void getCustomersOrders() throws ExecutionException, InterruptedException, JSONException {
         // Get the customer ID and add it to the URL
         String customerID = Customer.getInstance().getUserId();
-        urlToUse = "http://10.0.2.2:8080/order/currentOrders/?filter={%27customerID%27:%20'"+customerID +"'}";
+        urlToUse = "http://192.168.0.4:8080/order/currentOrders/?filter={%27customerID%27:%20'"+customerID +"'}";
         // Create the asyncTask and GET the required data - then cancel after its completed to stop the asynctask
         asyncGetData = new asyncGetData();
         asyncGetData.execute().get();
@@ -156,7 +156,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
             // Now attempt to get the data from the previousOrders collection
             // Return the JSON string to "" to ensure it doesnt use the previous data
             returnedJSON = "";
-            urlToUse = "http://10.0.2.2:8080/order/orderHistory/?filter={%27customerID%27:%20'"+customerID +"'}";
+            urlToUse = "http://192.168.0.4:8080/order/orderHistory/?filter={%27customerID%27:%20'"+customerID +"'}";
             // Create the asyncTask and GET the required data - then cancel after its completed to stop the asynctask
             asyncGetData = new asyncGetData();
             asyncGetData.execute().get();

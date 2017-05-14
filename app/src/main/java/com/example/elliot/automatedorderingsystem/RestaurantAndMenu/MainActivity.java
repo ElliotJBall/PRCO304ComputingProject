@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void getAllRestaurants() throws JSONException, ExecutionException, InterruptedException, ParseException {
-        urlToUse = "http://10.0.2.2:8080/restaurant/restaurants";
+        urlToUse = "http://192.168.0.4:8080/restaurant/restaurants";
         asyncGetData = new asyncGetData();
         asyncGetData.execute().get();
 
