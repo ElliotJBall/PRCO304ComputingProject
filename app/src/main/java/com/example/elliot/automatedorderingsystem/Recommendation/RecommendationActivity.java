@@ -105,7 +105,7 @@ public class RecommendationActivity extends AppCompatActivity {
             getLocationUpdates();
             // Set the new locations longitude and latitude to those that were just obtained
             customerLocation.setLongitude(userLongitude);
-            customerLocation.setLatitude(userLatitude);
+            customerLocation.setLatitude(userLongitude);
         }
 
         // Find the loading icon from the layout and enable it whilst the details about the user are collected
@@ -216,8 +216,8 @@ public class RecommendationActivity extends AppCompatActivity {
                 userLongitude = location.getLongitude();
                 userLatitude = location.getLatitude();
 
-                customerLocation.setLongitude(userLongitude);
-                customerLocation.setLatitude(userLatitude);
+                customerLocation.setLongitude(userLatitude);
+                customerLocation.setLatitude(userLongitude);
             }
 
             @Override
@@ -251,7 +251,7 @@ public class RecommendationActivity extends AppCompatActivity {
             // for ActivityCompat#requestPermissions for more details.
             return;
         } else {
-            locationManager.requestLocationUpdates("gps", 1000, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 0, locationListener);
         }
     }
 

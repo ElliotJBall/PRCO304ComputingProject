@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.neo4j.driver.internal.net.*;
+
 import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.RestaurantAndMenu.MainActivity;
@@ -85,7 +87,7 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
         // Find the layout and loop through each editText to ensure that it isn't null or empty
         ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.constraintRegisterCustomer);
 
-        for (int i = 0; i < layout.getChildCount(); i++) {
+        for (int i = 0; i <= layout.getChildCount(); i++) {
             if (layout.getChildAt(i) instanceof EditText) {
                 if (((EditText) layout.getChildAt(i)).getText().toString().equals("")) {
                     Toast.makeText(this, "Please ensure all details required have been added.", Toast.LENGTH_SHORT).show();
@@ -96,6 +98,9 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
                 }
             }
         }
+
+        // Check the mobile and telephone number fields to ensure that they are the correct length
+
             return editTextAreFull;
     }
 
@@ -146,8 +151,6 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
             // That username exists in the database so get the user to choose a different one
             Toast.makeText(this, "Sorry that username already exists, please try again with a different one.", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     private void getUsersAddressDetails() {
@@ -309,14 +312,8 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
             try {
                 Thread.sleep(1000);
                 returnedJSON = APIConnection.getAPIData(urlToUse);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Toast.makeText(getWindow().getContext(), "Error creating account. Please try again.", Toast.LENGTH_SHORT).show();
             }
             return returnedJSON;
         }

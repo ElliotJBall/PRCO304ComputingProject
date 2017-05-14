@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.RestaurantAndMenu.MainActivity;
 import com.example.elliot.automatedorderingsystem.R;
@@ -70,12 +71,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 password = txtPassword.getText().toString();
                 try {
                     checkSignIn();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    Toast.makeText(this, "Error checking user details. Please try again..", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btnRegister:
@@ -123,8 +120,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             final Thread checkUserCredentials = new Thread() {
                 @Override
                 public void run() {
-                    // Connect to the Neo4j Database through the Rest API
                     Driver driver = GraphDatabase.driver("bolt://10.0.2.2:7687" , AuthTokens.basic("neo4j" , "password"));
+
                     Session session = driver.session();
 
                     // Statement to run to check whether the user exists in the database
@@ -154,7 +151,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         try {
                             Customer.getInstance().setDateOfBirth(dateFormat.parse(node.get("dateOfBirth").asString()));
                         } catch (ParseException e) {
-                            e.printStackTrace();
+                            Toast.makeText(getWindow().getContext(), "Error getting user details. Please try again.", Toast.LENGTH_SHORT).show();
                         }
                         Customer.getInstance().setEmailAddress(node.get("emailAddress").asString());
                         Customer.getInstance().setMobileNumber(node.get("mobileNumber").asString());
@@ -163,6 +160,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     session.close();
                     driver.close();
+
                 }
             };
             checkUserCredentials.start();
@@ -180,11 +178,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private boolean checkForPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{
                         android.Manifest.permission.ACCESS_FINE_LOCATION,
                         android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        android.Manifest.permission.INTERNET
+                        Manifest.permission.INTERNET
                 }, 10);
                 return false;
             } else {

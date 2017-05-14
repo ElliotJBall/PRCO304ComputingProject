@@ -238,8 +238,8 @@ public class OrderHistoryActivity extends AppCompatActivity {
             try {
                 Date orderDate = originalFormat.parse(String.valueOf(currentOrder.getDateOrdered()));
                 timeOrdered.setText(new SimpleDateFormat("dd/MM/yyyy").format(orderDate));
-            } catch (ParseException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Toast.makeText(getContext(), "Error getting order details. Please try again.", Toast.LENGTH_SHORT).show();
             }
 
             // Set the number of items ordered
@@ -283,7 +283,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
                 Date orderDate = originalFormat.parse(String.valueOf(currentOrder.getDateOrdered()));
                 timeOrdered.setText(new SimpleDateFormat("dd/MM/yyyy").format(orderDate));
             } catch (ParseException e) {
-                e.printStackTrace();
+                Toast.makeText(getContext(), "Error getting order details. Please try again.", Toast.LENGTH_SHORT).show();
             }
 
             // Set the number of items ordered
@@ -307,12 +307,8 @@ public class OrderHistoryActivity extends AppCompatActivity {
         protected String doInBackground(Object... params) {
             try {
                 returnedJSON = APIConnection.getAPIData(urlToUse);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Toast.makeText(getWindow().getContext(), "Error getting order details. Please try again.", Toast.LENGTH_SHORT).show();
             }
             return returnedJSON;
         }

@@ -202,14 +202,8 @@ public class RestaurantActivity extends AppCompatActivity {
             try {
                 Thread.sleep(1000);
                 returnedJSON = APIConnection.getAPIData(urlToUse);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Toast.makeText(getWindow().getContext(), "Error getting the menu. Please try again.", Toast.LENGTH_SHORT).show();
             }
             return returnedJSON;
         }

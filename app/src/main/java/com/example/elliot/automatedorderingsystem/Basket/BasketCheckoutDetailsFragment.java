@@ -106,12 +106,8 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
                         // Insert the order into the database using information from the customer and order object
                         // Make use of the APIConnection class which holds the POST method
                         insertOrder();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), "Error placing order. Please try again.", Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
@@ -299,8 +295,8 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
         protected Void doInBackground(Object... params) {
             try {
                 responseCode = APIConnection.postAPIData(urlToUse, objectToUse);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Toast.makeText(getContext(), "Error placing order. Please try again.", Toast.LENGTH_SHORT).show();
             }
             return null;
         }

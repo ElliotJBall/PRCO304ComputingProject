@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
@@ -150,9 +151,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-            Location location = locationManager.getLastKnownLocation("gps");
-            userLongitude = location.getLongitude();
-            userLatitude = location.getLatitude();
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            userLongitude = location.getLatitude();
+            userLatitude = location.getLongitude();
 
         } catch (Exception e) {
 
@@ -165,8 +166,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 userLongitude = location.getLongitude();
                 userLatitude = location.getLatitude();
 
-                customerLocation.setLongitude(userLongitude);
-                customerLocation.setLatitude(userLatitude);
+                customerLocation.setLongitude(userLatitude);
+                customerLocation.setLatitude(userLongitude);
 
                 // Loop through all the restaurants in the list and then recalculate the distance to the user as the users location has changed
                 for (Restaurant currentRestaurant : allRestaurants) {
@@ -213,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             // for ActivityCompat#requestPermissions for more details.
             return;
         } else {
-            locationManager.requestLocationUpdates("gps", 1000, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 0, locationListener);
         }
     }
 
@@ -238,25 +239,29 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         asyncGetData = new asyncGetData();
         asyncGetData.execute().get();
 
-        // Get the required part of the JSON string
-        returnedJSON = returnedJSON.substring(returnedJSON.indexOf("[") , returnedJSON.indexOf("]") +1);
+        if (!returnedJSON.equals("")) {
+            // Get the required part of the JSON string
+            returnedJSON = returnedJSON.substring(returnedJSON.indexOf("["), returnedJSON.indexOf("]") + 1);
 
-        // Create a JSON Array that'll hold all the data pulled
-        JSONArray jsonArray = new JSONArray(returnedJSON);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+            // Create a JSON Array that'll hold all the data pulled
+            JSONArray jsonArray = new JSONArray(returnedJSON);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
 
-        // Loop through the JSON array and get all the restaurants, adding them to the ArrayList<Restaurant>
-        for (int i = 0; i < jsonArray.length(); i++) {
-            // Create a temporary restaurant menu as we dont need to get the data until the user has selected it from the list
-            ArrayList<Food> temporaryMenu = new ArrayList<Food>();
-            Document restaurantDocument = Document.parse(jsonArray.get(i).toString());
-            Restaurant restaurant = new Restaurant(restaurantDocument.get("_id").toString() , restaurantDocument.get("restaurantName").toString()
-            , restaurantDocument.get("address").toString() , restaurantDocument.get("city").toString()
-            , restaurantDocument.get("postcode").toString() , restaurantDocument.get("longitude").toString()
-            , restaurantDocument.get("latitude").toString() , simpleDateFormat.parse(restaurantDocument.get("openingTime").toString())
-            , simpleDateFormat.parse(restaurantDocument.get("closingTime").toString()),temporaryMenu);
+            // Loop through the JSON array and get all the restaurants, adding them to the ArrayList<Restaurant>
+            for (int i = 0; i < jsonArray.length(); i++) {
+                // Create a temporary restaurant menu as we dont need to get the data until the user has selected it from the list
+                ArrayList<Food> temporaryMenu = new ArrayList<Food>();
+                Document restaurantDocument = Document.parse(jsonArray.get(i).toString());
+                Restaurant restaurant = new Restaurant(restaurantDocument.get("_id").toString(), restaurantDocument.get("restaurantName").toString()
+                        , restaurantDocument.get("address").toString(), restaurantDocument.get("city").toString()
+                        , restaurantDocument.get("postcode").toString(), restaurantDocument.get("longitude").toString()
+                        , restaurantDocument.get("latitude").toString(), simpleDateFormat.parse(restaurantDocument.get("openingTime").toString())
+                        , simpleDateFormat.parse(restaurantDocument.get("closingTime").toString()), temporaryMenu);
 
-            allRestaurants.add(restaurant);
+                allRestaurants.add(restaurant);
+            }
+        } else {
+            Toast.makeText(this, "Error getting restaurants, please ensure the application can use the internet.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -297,14 +302,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 try {
                     getAllRestaurants();
                     populateRestaurantList();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    Toast.makeText(this, "Error finding restaurants. Please try again.", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case 1:
@@ -391,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     restaurantOpeningTime.setText("CLOSED");
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Toast.makeText(getContext(), "Error finding restaurants. Please try again.", Toast.LENGTH_SHORT).show();
             }
 
             // Calculate the distance to the user from the restaurant and location given
@@ -414,14 +413,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             try {
                 Thread.sleep(1000);
                 returnedJSON = APIConnection.getAPIData(urlToUse);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                Toast.makeText(getWindow().getContext(), "Error finding restaurants. Please try again.", Toast.LENGTH_SHORT).show();
             }
             return returnedJSON;
         }

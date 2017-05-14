@@ -3,8 +3,6 @@ package com.example.elliot.automatedorderingsystem;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.neo4j.driver.v1.*;
-import org.neo4j.driver.v1.types.Node;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,9 +12,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
-
-import static org.neo4j.driver.v1.Values.parameters;
-
 /**
  * Created by Elliot on 08/03/2017.
  */
