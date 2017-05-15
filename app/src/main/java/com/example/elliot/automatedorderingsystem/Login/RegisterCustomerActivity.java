@@ -5,10 +5,12 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import org.neo4j.driver.internal.net.*;
 
 import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
+import com.example.elliot.automatedorderingsystem.ClassLibrary.CustomerGender;
 import com.example.elliot.automatedorderingsystem.RestaurantAndMenu.MainActivity;
 import com.example.elliot.automatedorderingsystem.R;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -44,6 +47,7 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
     private Button btnRegister;
     private boolean doesExist = false;
     private AVLoadingIndicatorView loadingIndicatorView;
+    private CustomerGender customerGender;
 
     private String returnedJSON = "", urlToUse = "";
     private APIConnection APIConnection = new APIConnection();
@@ -142,8 +146,35 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
                 Toast.makeText(this, "Error getting location, please try again.", Toast.LENGTH_SHORT).show();
                 loadingIndicatorView.setVisibility(View.INVISIBLE);
             } else {
-                // Add the user into the database then redirect them to a new activity
-                insertUserIntoDatabase();
+                // Get user gender and then set it to the CustomerGender variable
+                // Add onClickListener to button to check when customer wants to register
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getWindow().getContext());
+                View mView = getWindow().getDecorView().inflate(getWindow().getContext(), R.layout.customer_gender_register, null);
+
+                Button btnRegisterUserWithGender = (Button) mView.findViewById(R.id.btnRegisterCustomerWithGender);
+                btnRegisterUserWithGender.setEnabled(false);
+                // Set onClickListeners and check which was is enabled
+                getCheckBoxSelected(mView, btnRegisterUserWithGender);
+
+                btnRegisterUserWithGender.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Check if the gender has been set then add customer
+                        // if not ask customer to set gender
+                        if (customerGender != null) {
+                            // Add the user into the database then redirect them to a new activity
+                            insertUserIntoDatabase();
+                        } else {
+                            Toast.makeText(getWindow().getContext(), "Please ensure you have selected a gender and try again.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                alertDialogBuilder.setView(mView);
+
+                // Set the dialog to the newly built AlertDialog - Display it
+                AlertDialog dialog = alertDialogBuilder.create();
+                dialog.show();
             }
 
         } else {
@@ -195,6 +226,7 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
                 Session session = driver.session();
 
                 // Statement to run to check whether the username exists in the database
+
                 StatementResult result = session.run("MATCH (n:Customer) WHERE n.username = {username}"
                                 + "RETURN (n)"
                         , Values.parameters("username", username));
@@ -229,10 +261,10 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
                 session.run("CREATE (n:Customer {_id: {_id}, username: {username}, password: {password}, " +
                                 "firstName: {firstName}, lastName: {lastName}, dateOfBirth: {dateOfBirth}, address: {address}, " +
                                 "telephoneNumber: {telephoneNumber}, mobileNumber: {mobileNumber}, postcode: {postcode}, city: {city}" +
-                                ", countryName: {countryName}, emailAddress: {emailAddress} })" ,
+                                ", countryName: {countryName}, emailAddress: {emailAddress}, gender: {gender} })" ,
                         Values.parameters("_id", _id, "username", username, "password", password, "firstName", firstName, "lastName", lastName,
                                 "dateOfBirth", dateOfBirth, "address", address, "telephoneNumber", telephoneNumber, "mobileNumber", mobileNumber,
-                                "emailAddress", emailAddress, "postcode", postcode, "city", city, "countryName", countyName));
+                                "emailAddress", emailAddress, "postcode", postcode, "city", city, "countryName", countyName, "gender", customerGender.toString()));
                 session.close();
                 driver.close();
             }
@@ -304,6 +336,70 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
             default:
                 break;
         }
+    }
+
+    private void getCheckBoxSelected(View mView, final Button btnRegisterCustomer) {
+        final CheckBox checkBoxMale = (CheckBox) mView.findViewById(R.id.checkBoxGenderMale);
+        final CheckBox checkBoxFemale = (CheckBox) mView.findViewById(R.id.checkBoxGenderFemale);
+        final CheckBox checkBoxNotSay = (CheckBox) mView.findViewById(R.id.checkBoxGenderNotSay);
+
+        // Onclick listeners for each check box to see which one was selected
+        checkBoxMale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkBoxMale.isChecked()) {
+                    customerGender = CustomerGender.MALE;
+
+                    checkBoxFemale.setEnabled(false);
+                    checkBoxNotSay.setEnabled(false);
+                    btnRegisterCustomer.setEnabled(true);
+
+                }
+                if (!checkBoxMale.isChecked()) {
+                    checkBoxFemale.setEnabled(true);
+                    checkBoxNotSay.setEnabled(true);
+                    btnRegisterCustomer.setEnabled(false);
+                }
+            }
+        });
+
+        checkBoxFemale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkBoxFemale.isChecked()) {
+                    customerGender = CustomerGender.FEMALE;
+
+                    checkBoxMale.setEnabled(false);
+                    checkBoxNotSay.setEnabled(false);
+                    btnRegisterCustomer.setEnabled(true);
+
+                }
+                if (!checkBoxFemale.isChecked()) {
+                    checkBoxMale.setEnabled(true);
+                    checkBoxNotSay.setEnabled(true);
+                     btnRegisterCustomer.setEnabled(false);
+                }
+            }
+        });
+
+        checkBoxNotSay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkBoxNotSay.isChecked()) {
+                    customerGender = CustomerGender.NOTSAY;
+
+                    checkBoxFemale.setEnabled(false);
+                    checkBoxMale.setEnabled(false);
+                    btnRegisterCustomer.setEnabled(true);
+
+                }
+                if (!checkBoxNotSay.isChecked()) {
+                    checkBoxMale.setEnabled(true);
+                    checkBoxFemale.setEnabled(true);
+                    btnRegisterCustomer.setEnabled(false);
+                }
+            }
+        });
     }
 
     public class asyncGetData extends AsyncTask<Object, Object, String> {

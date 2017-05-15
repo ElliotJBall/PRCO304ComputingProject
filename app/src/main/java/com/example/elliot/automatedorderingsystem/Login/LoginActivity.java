@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
+import com.example.elliot.automatedorderingsystem.ClassLibrary.CustomerGender;
 import com.example.elliot.automatedorderingsystem.RestaurantAndMenu.MainActivity;
 import com.example.elliot.automatedorderingsystem.R;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -28,6 +30,11 @@ import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Values;
 import org.neo4j.driver.v1.types.Node;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutionException;
@@ -120,46 +127,66 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             final Thread checkUserCredentials = new Thread() {
                 @Override
                 public void run() {
-                    Driver driver = GraphDatabase.driver("bolt://192.168.0.4:7687" , AuthTokens.basic("neo4j" , "password"));
+                    Looper.prepare();
+                    try {
+                        Driver driver = GraphDatabase.driver("bolt://192.168.0.4:7687", AuthTokens.basic("neo4j", "password"));
 
-                    Session session = driver.session();
+                        Session session = driver.session();
 
-                    // Statement to run to check whether the user exists in the database
-                    StatementResult result = session.run("MATCH (n:Customer) WHERE n.username = {username} AND n.password = {password} "
-                                    + "RETURN (n)"
-                            , Values.parameters("username" , username , "password" , password));
+                        // Statement to run to check whether the user exists in the database
+                        StatementResult result = session.run("MATCH (n:Customer) WHERE n.username = {username} AND n.password = {password} RETURN (n)"
+                                , Values.parameters("username", username, "password", password));
 
-                    // Check whether there was a result if not then the user either entered the wrong credentials or the user does not exist in the database
-                    // If true then add the credentials to the customer instance and then return to the loginActivity
-                    while (result.hasNext()) {
-                        Record record = result.next();
-                        Node node = record.values().get(0).asNode();
+                        // Check whether there was a result if not then the user either entered the wrong credentials or the user does not exist in the database
+                        // If true then add the credentials to the customer instance and then return to the loginActivity
+                        while (result.hasNext()) {
+                            Record record = result.next();
+                            Node node = record.values().get(0).asNode();
 
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-                        // Get the customer details from the node and add them to the customer instance
-                        Customer.getInstance().setUsername(username);
-                        Customer.getInstance().setPassword(password);
-                        Customer.getInstance().setUserId(node.get("_id").asString());
-                        Customer.getInstance().setFirstname(node.get("firstName").asString());
-                        Customer.getInstance().setLastname(node.get("lastName").asString());
-                        Customer.getInstance().setAddress(node.get("address").asString());
-                        Customer.getInstance().setCity(node.get("city").asString());
-                        Customer.getInstance().setCounty(node.get("county").asString());
-                        Customer.getInstance().setPostcode(node.get("postcode").asString());
-                        // Attempt to parse the date of birth of the user from the string given
-                        try {
-                            Customer.getInstance().setDateOfBirth(dateFormat.parse(node.get("dateOfBirth").asString()));
-                        } catch (ParseException e) {
-                            Toast.makeText(getWindow().getContext(), "Error getting user details. Please try again.", Toast.LENGTH_SHORT).show();
+                            // Get the customer details from the node and add them to the customer instance
+                            Customer.getInstance().setUsername(username);
+                            Customer.getInstance().setPassword(password);
+                            Customer.getInstance().setUserId(node.get("_id").asString());
+                            Customer.getInstance().setFirstname(node.get("firstName").asString());
+                            Customer.getInstance().setLastname(node.get("lastName").asString());
+                            Customer.getInstance().setAddress(node.get("address").asString());
+                            Customer.getInstance().setCity(node.get("city").asString());
+                            Customer.getInstance().setCounty(node.get("county").asString());
+                            Customer.getInstance().setPostcode(node.get("postcode").asString());
+                            // Attempt to parse the date of birth of the user from the string given
+                            try {
+                                Customer.getInstance().setDateOfBirth(dateFormat.parse(node.get("dateOfBirth").asString()));
+                            } catch (ParseException e) {
+                                Toast.makeText(getWindow().getContext(), "Error getting user details. Please try again.", Toast.LENGTH_SHORT).show();
+                            }
+                            Customer.getInstance().setEmailAddress(node.get("emailAddress").asString());
+                            Customer.getInstance().setMobileNumber(node.get("mobileNumber").asString());
+                            Customer.getInstance().setTelephoneNumber(node.get("telephoneNumber").asString());
+
+                            String genderString = node.get("gender").asString();
+
+                            if (!genderString.equals("")) {
+                                switch (genderString) {
+                                    case "MALE" :
+                                        Customer.getInstance().setGender(CustomerGender.MALE);
+                                        break;
+                                    case "FEMALE" :
+                                        Customer.getInstance().setGender(CustomerGender.FEMALE);
+                                        break;
+                                    case "NOTSAY" :
+                                        Customer.getInstance().setGender(CustomerGender.NOTSAY);
+                                        break;
+                                }
+                            }
                         }
-                        Customer.getInstance().setEmailAddress(node.get("emailAddress").asString());
-                        Customer.getInstance().setMobileNumber(node.get("mobileNumber").asString());
-                        Customer.getInstance().setTelephoneNumber(node.get("telephoneNumber").asString());
-                    }
 
-                    session.close();
-                    driver.close();
+                        session.close();
+                        driver.close();
+                    } catch (Exception e) {
+                        Toast.makeText(getWindow().getContext(), "Error connecting to database. Please try again.", Toast.LENGTH_SHORT).show();
+                    }
 
                 }
             };

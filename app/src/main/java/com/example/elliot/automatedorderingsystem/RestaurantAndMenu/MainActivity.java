@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Looper;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -151,12 +152,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            userLongitude = location.getLatitude();
-            userLatitude = location.getLongitude();
-
+                Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                userLongitude = location.getLatitude();
+                userLatitude = location.getLongitude();
         } catch (Exception e) {
-
+            Toast.makeText(this, "Error getting location, please ensure the application has the location permission.", Toast.LENGTH_SHORT).show();
         }
 
         locationListener = new LocationListener() {
@@ -410,6 +410,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public class asyncGetData extends AsyncTask<Object, Object, String> {
         @Override
         protected String doInBackground(Object... params) {
+            Looper.prepare();
             try {
                 Thread.sleep(1000);
                 returnedJSON = APIConnection.getAPIData(urlToUse);

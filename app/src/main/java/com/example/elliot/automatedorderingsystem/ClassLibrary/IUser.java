@@ -22,6 +22,7 @@ public interface IUser {
     String getEmailAddress();
     Order getUserOrder();
     String getPostcode();
+    CustomerGender getGender();
 
     void setUsername(String username);
     void setPassword(String password);
@@ -37,4 +38,5 @@ public interface IUser {
     void setEmailAddress(String emailAddress);
     void setUserOrder(Order userOrder);
     void setPostcode(String postcode);
+    void setGender(CustomerGender gender);
 }

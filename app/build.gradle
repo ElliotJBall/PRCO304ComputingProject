@@ -24,6 +24,7 @@ android {
         exclude 'META-INF/LICENSES.txt'
         exclude 'META-INF/README.md'
     }
+
 }
 
 dependencies {
@@ -35,6 +36,8 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
 
     compile files('libs/gson-2.6.2.jar')
+
+    compile 'org.neo4j:neo4j-jdbc:3.0.1'
     compile 'org.neo4j.driver:neo4j-java-driver:1.2.1'
     compile 'javax.inject:javax.inject:1'
     compile 'com.android.support:appcompat-v7:25.1.1'

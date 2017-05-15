@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CheckBox
+        android:id="@+id/checkBoxGenderMale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:text="Male"
+        android:layout_marginTop="25dp"/>
+
+    <CheckBox
+        android:id="@+id/checkBoxGenderFemale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Female"
+        android:layout_marginTop="25dp"/>
+
+    <CheckBox
+        android:id="@+id/checkBoxGenderNotSay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="13dp"
+        android:text="Not say"
+        android:layout_marginTop="25dp"/>
+
+    <Button
+        android:id="@+id/btnRegisterCustomerWithGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/checkBoxGenderNotSay"
+        android:layout_alignStart="@+id/checkBoxGenderMale"
+        android:layout_below="@+id/checkBoxGenderFemale"
+        android:layout_marginBottom="25dp"
+        android:layout_marginTop="39dp"
+        android:background="@color/colorAccent"
+        android:text="REGISTER"
+        android:textColor="@color/colorWhite" />
+</RelativeLayout>

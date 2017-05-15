@@ -106,6 +106,7 @@
     <orderEntry type="library" exported="" name="design-25.1.1" level="project" />
     <orderEntry type="library" exported="" name="transition-25.1.1" level="project" />
     <orderEntry type="library" exported="" name="constraint-layout-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="neo4j-jdbc-3.0.1" level="project" />
     <orderEntry type="library" exported="" name="mongodb-driver-core-3.4.2" level="project" />
     <orderEntry type="library" exported="" name="support-core-ui-25.2.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-base-7.0.0" level="project" />

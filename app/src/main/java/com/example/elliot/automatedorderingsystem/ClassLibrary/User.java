@@ -23,6 +23,17 @@ public abstract class User implements IUser, Serializable {
     protected String emailAddress;
     protected Order userOrder = new Order();
     protected String postcode;
+    protected CustomerGender gender;
+
+    @Override
+    public CustomerGender getGender() {
+        return gender;
+    }
+
+    @Override
+    public void setGender(CustomerGender gender) {
+        this.gender = gender;
+    }
 
     public String getPostcode() {
         return postcode;

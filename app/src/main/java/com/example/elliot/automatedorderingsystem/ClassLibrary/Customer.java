@@ -19,7 +19,8 @@ public class Customer extends User implements Serializable {
     }
 
     public Customer(String id, String username, String password, String firstname, String lastname, Date dateOfBirth
-                    , String address, String city, String telephoneNumber, String mobileNumber, String emailAddress, Order userOrder, String postcode) {
+                    , String address, String city, String telephoneNumber, String mobileNumber, String emailAddress
+            , Order userOrder, String postcode, CustomerGender gender) {
         this.userId = id;
         this.username = username;
         this.password = password;
@@ -33,6 +34,7 @@ public class Customer extends User implements Serializable {
         this.emailAddress = emailAddress;
         this.userOrder = userOrder;
         this.postcode = postcode;
+        this.gender = gender;
     }
 
     public Customer() {
