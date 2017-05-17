@@ -3,12 +3,30 @@
 
     <item
         is-multidex="true"
+        jar="C:\Users\Elliot\.gradle\caches\modules-2\files-2.1\org.neo4j.driver\neo4j-java-driver\1.3.0\efacaa88690ebbdcbb70266229991d618b445067\neo4j-java-driver-1.3.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="efacaa88690ebbdcbb70266229991d618b445067">
+        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\10\neo4j-java-driver-1.3.0_d57c657100c0e32de9daa3c82cc64189501298a0\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\libs\gson-2.6.2.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="f1bc476cc167b18e66c297df599b2377131a8947">
         <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\2\gson-2.6.2_4122167b09ddd8d456d4e569b60738c1ba7a06e1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\libs\neo4j-jdbc-2.1.4-jar-with-dependencies.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="f3da78975d82debbdd55996fdd7d5b137eda4951">
+        <dex dex="C:\Users\Elliot\Desktop\AutomatedOrderingApplication\app\build\intermediates\transforms\dex\debug\folders\1000\2\neo4j-jdbc-2.1.4-jar-with-dependencies_3ab1bed8cadc03f13c76bf360a7459fd3349dd0e\classes.dex" />
     </item>
 
 </items>

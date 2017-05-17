@@ -15,7 +15,7 @@ public interface IUser {
     String getLastname();
     Date getDateOfBirth();
     String getAddress();
-    String getCounty();
+    String getCountry();
     String getCity();
     String getTelephoneNumber();
     String getMobileNumber();
@@ -31,7 +31,7 @@ public interface IUser {
     void setLastname(String lastname);
     void setDateOfBirth(Date dateOfBirth);
     void setAddress(String address);
-    void setCounty(String county);
+    void setCountry(String country);
     void setCity(String city);
     void setTelephoneNumber(String telephoneNumber);
     void setMobileNumber(String mobileNumber);

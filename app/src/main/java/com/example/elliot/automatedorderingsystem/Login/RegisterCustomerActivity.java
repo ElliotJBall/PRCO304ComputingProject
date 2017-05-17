@@ -14,8 +14,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.neo4j.driver.internal.net.*;
-
 import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.CustomerGender;
@@ -222,7 +220,7 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
                 @Override
                 public void run() {
                 // Connect to the Neo4j Database through the Rest API
-                Driver driver = GraphDatabase.driver("bolt://192.168.0.4:7687", AuthTokens.basic("neo4j", "password"));
+                Driver driver = GraphDatabase.driver("bolt://192.168.0.6:7687", AuthTokens.basic("neo4j", "password"));
                 Session session = driver.session();
 
                 // Statement to run to check whether the username exists in the database
@@ -254,7 +252,7 @@ public class RegisterCustomerActivity extends AppCompatActivity implements View.
             @Override
             public void run() {
                 // Connect to the Neo4j Database through the Rest API
-                Driver driver = GraphDatabase.driver("bolt://192.168.0.4:7687" , AuthTokens.basic("neo4j" , "password"));
+                Driver driver = GraphDatabase.driver("bolt://192.168.0.6:7687" , AuthTokens.basic("neo4j" , "password"));
                 Session session = driver.session();
 
                 // Statement to insert the new user into the database

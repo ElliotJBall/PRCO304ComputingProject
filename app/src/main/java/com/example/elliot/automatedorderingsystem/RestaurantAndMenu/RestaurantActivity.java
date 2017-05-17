@@ -116,7 +116,7 @@ public class RestaurantActivity extends AppCompatActivity {
         // Gets all food which matches the menuID
         // Add the required spacing for the api to work (change white space to %20)
         String restaurantName = restaurant.getRestaurantName().replaceAll(" ", "%20");
-        urlToUse = "http://192.168.0.4:8080/food/food/?filter={%27restaurantName%27:%20'"+restaurantName+"'}";
+        urlToUse = "http://192.168.0.6:8080/food/food/?filter={%27restaurantName%27:%20'"+restaurantName+"'}";
 
         asyncGetData = new asyncGetData();
         asyncGetData.execute().get();

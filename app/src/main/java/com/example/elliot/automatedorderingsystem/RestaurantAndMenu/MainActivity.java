@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         // Attempt to get the users location before the onLocationChange method is called.
-        try {
+
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
@@ -152,12 +152,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-                Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                Location location = locationManager.getLastKnownLocation("gps");
                 userLongitude = location.getLatitude();
                 userLatitude = location.getLongitude();
-        } catch (Exception e) {
-            Toast.makeText(this, "Error getting location, please ensure the application has the location permission.", Toast.LENGTH_SHORT).show();
-        }
 
         locationListener = new LocationListener() {
             @Override
@@ -214,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             // for ActivityCompat#requestPermissions for more details.
             return;
         } else {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 0, locationListener);
+            locationManager.requestLocationUpdates("gps", 30000, 0, locationListener);
         }
     }
 
@@ -235,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void getAllRestaurants() throws JSONException, ExecutionException, InterruptedException, ParseException {
-        urlToUse = "http://192.168.0.4:8080/restaurant/restaurants";
+        urlToUse = "http://192.168.0.6:8080/restaurant/restaurants";
         asyncGetData = new asyncGetData();
         asyncGetData.execute().get();
 

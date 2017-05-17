@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="neo4j-jdbc-2.1.4-jar-with-dependencies">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/neo4j-jdbc-2.1.4-jar-with-dependencies.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

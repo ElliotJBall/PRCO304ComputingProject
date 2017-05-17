@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.CustomerGender;
 import com.example.elliot.automatedorderingsystem.RestaurantAndMenu.MainActivity;
@@ -27,16 +26,12 @@ import org.neo4j.driver.v1.GraphDatabase;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
+import org.neo4j.driver.v1.Transaction;
 import org.neo4j.driver.v1.Values;
 import org.neo4j.driver.v1.types.Node;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -129,7 +124,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 public void run() {
                     Looper.prepare();
                     try {
-                        Driver driver = GraphDatabase.driver("bolt://192.168.0.4:7687", AuthTokens.basic("neo4j", "password"));
+                        Driver driver = GraphDatabase.driver("bolt://192.168.0.6:7687", AuthTokens.basic("neo4j", "password"));
 
                         Session session = driver.session();
 
@@ -143,8 +138,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Record record = result.next();
                             Node node = record.values().get(0).asNode();
 
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
                             // Get the customer details from the node and add them to the customer instance
                             Customer.getInstance().setUsername(username);
                             Customer.getInstance().setPassword(password);
@@ -153,11 +146,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Customer.getInstance().setLastname(node.get("lastName").asString());
                             Customer.getInstance().setAddress(node.get("address").asString());
                             Customer.getInstance().setCity(node.get("city").asString());
-                            Customer.getInstance().setCounty(node.get("county").asString());
+                            Customer.getInstance().setCountry(node.get("countryName").asString());
                             Customer.getInstance().setPostcode(node.get("postcode").asString());
                             // Attempt to parse the date of birth of the user from the string given
                             try {
-                                Customer.getInstance().setDateOfBirth(dateFormat.parse(node.get("dateOfBirth").asString()));
+                                SimpleDateFormat originalFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyy");
+                                Date dateOfBirth = originalFormat.parse(node.get("dateOfBirth").asString());
+                                Customer.getInstance().setDateOfBirth(dateOfBirth);
                             } catch (ParseException e) {
                                 Toast.makeText(getWindow().getContext(), "Error getting user details. Please try again.", Toast.LENGTH_SHORT).show();
                             }
@@ -184,6 +179,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         session.close();
                         driver.close();
+
                     } catch (Exception e) {
                         Toast.makeText(getWindow().getContext(), "Error connecting to database. Please try again.", Toast.LENGTH_SHORT).show();
                     }

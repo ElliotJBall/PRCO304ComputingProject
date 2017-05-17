@@ -16,7 +16,7 @@ public abstract class User implements IUser, Serializable {
     protected String lastname;
     protected Date dateOfBirth;
     protected String address;
-    protected String county;
+    protected String country;
     protected String city;
     protected String telephoneNumber;
     protected String mobileNumber;
@@ -122,13 +122,13 @@ public abstract class User implements IUser, Serializable {
     }
 
     @Override
-    public String getCounty() {
-        return county;
+    public String getCountry() {
+        return country;
     }
 
     @Override
-    public void setCounty(String county) {
-        this.county = county;
+    public void setCountry(String county) {
+        this.country = county;
     }
 
     @Override
