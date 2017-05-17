@@ -24,6 +24,7 @@
         <item name="alphabetical"> Alphabetical (A-Z)</item>
         <item name="rating"> Rating</item>
         <item name="review"> Reviews</item>
+        <item name="open"> Currently open</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

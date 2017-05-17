@@ -152,10 +152,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-                Location location = locationManager.getLastKnownLocation("gps");
-                userLongitude = location.getLatitude();
-                userLatitude = location.getLongitude();
+                Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
+                if (location != null) {
+                    userLongitude = location.getLatitude();
+                    userLatitude = location.getLongitude();
+                }
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -318,7 +320,45 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 });
                 populateRestaurantList();
                 break;
+            case 5:
+                // Go through all restaurants in the list and check whether it's open
+                // if closed then remove from list
 
+                try {
+                    Date restaurantDate = new Date();
+                    SimpleDateFormat originalFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyy");
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+                    String currentDate = timeFormat.format(restaurantDate);
+                    Date currentTime = null;
+                    currentTime = new SimpleDateFormat("HH:mm:ss").parse(currentDate);
+
+                    Calendar currentTimeCalendar = Calendar.getInstance();
+                    currentTimeCalendar.setTime(currentTime);
+
+                    // Array to hold all the currently open restaurants
+                    ArrayList<Restaurant> openRestaurants = new ArrayList<>();
+
+                    // Loop through all restaurants currently avaliable and check if they're closing time is before the current time
+                    for (Restaurant restaurant : allRestaurants) {
+                        restaurantDate = originalFormat.parse(restaurant.getClosingTime().toString());
+                        closingTime = timeFormat.format(restaurantDate);
+                        Date closingTimeDate = new SimpleDateFormat("HH:mm:ss").parse(closingTime);
+                        Calendar closingTimeCalendar = Calendar.getInstance();
+                        closingTimeCalendar.setTime(closingTimeDate);
+
+                        if (currentTimeCalendar.getTime().before(closingTimeCalendar.getTime())) {
+                            openRestaurants.add(restaurant);
+                        }
+                }
+
+                // Set all restaurants to open restaurants then populate the view with only open restaurants
+                allRestaurants = openRestaurants;
+
+                } catch (Exception e) {
+                    Toast.makeText(this, "Error getting restaurant times, please try again.", Toast.LENGTH_SHORT).show();
+                }
+                populateRestaurantList();
+                break;
             default:
                 // Call method to populate the list view - Get all restaurants from API and display them
                 // Checks whether the restaurant is currently open or closed and edits the text accordingly
@@ -379,7 +419,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 // NEED TO CHECK WHETHER TIME IS ALSO BEFORE RESTAURANT IS MEANT TO SHUT
                 // CURRENTLY CANNOT GET THE CORRECT CLOSING TIME OF A RESTAURANT - FIX
 
-                if (currentTimeCalendar.getTime().after(openingTimeCalendar.getTime())) {
+                if (currentTimeCalendar.getTime().after(openingTimeCalendar.getTime()) && currentTimeCalendar.getTime().before(closingTimeCalendar.getTime())) {
                     restaurantOpeningTime.setTextColor(Color.GREEN);
                     restaurantOpeningTime.setText("OPEN");
                 } else {
