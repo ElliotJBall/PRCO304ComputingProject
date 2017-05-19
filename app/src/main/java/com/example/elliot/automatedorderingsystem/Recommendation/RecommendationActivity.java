@@ -29,8 +29,10 @@ import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
+import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
 import com.example.elliot.automatedorderingsystem.Login.LoginActivity;
+import com.example.elliot.automatedorderingsystem.MapsActivity;
 import com.example.elliot.automatedorderingsystem.OrderHistory.OrderHistoryActivity;
 import com.example.elliot.automatedorderingsystem.R;
 import com.example.elliot.automatedorderingsystem.RestaurantAndMenu.MainActivity;
@@ -286,7 +288,13 @@ public class RecommendationActivity extends AppCompatActivity {
                 startActivity(new Intent(RecommendationActivity.this, MainActivity.class));
                 break;
             case R.id.signOut:
+                Customer.getInstance().setUsername(null);
+                Order newOrder = new Order();
+                Customer.getInstance().setUserOrder(newOrder);
                 startActivity(new Intent(RecommendationActivity.this, LoginActivity.class));
+                break;
+            case R.id.viewMap:
+                startActivity(new Intent(RecommendationActivity.this, MapsActivity.class));
                 break;
             default:
                 break;
@@ -321,9 +329,11 @@ public class RecommendationActivity extends AppCompatActivity {
         final Thread checkUserCredentials = new Thread() {
             @Override
             public void run() {
-                Looper.prepare();
+                if (Looper.myLooper() == null) {
+                    Looper.prepare();
+                }
                 // Connect to the Neo4j Database through the Rest API
-                Driver driver = GraphDatabase.driver("bolt://192.168.0.6:7687" , AuthTokens.basic("neo4j" , "password"));
+                Driver driver = GraphDatabase.driver("bolt://192.168.0.2:7687" , AuthTokens.basic("neo4j" , "password"));
                 Session session = driver.session();
 
                 // Statement to run to check whether the user exists in the database
@@ -372,7 +382,7 @@ public class RecommendationActivity extends AppCompatActivity {
     private void getCustomerOrdersFromNodeID(long nodeId) {
         // Connect to the Neo4J database and return the customer details
         // Connect to the Neo4j Database through the Rest API
-        Driver driver = GraphDatabase.driver("bolt://192.168.0.6:7687" , AuthTokens.basic("neo4j" , "password"));
+        Driver driver = GraphDatabase.driver("bolt://192.168.0.2:7687" , AuthTokens.basic("neo4j" , "password"));
         Session session = driver.session();
 
         // Statement to run to check whether the user exists in the database
@@ -398,7 +408,7 @@ public class RecommendationActivity extends AppCompatActivity {
     private void checkRelatedCustomersOrderHistory() {
         // Go through each string in the related Id's arrayList, using the returned JSON create a list of restaurants user chose to order from
         for (String customerID : relatedCustomerIds) {
-            urlToUse = "http://192.168.0.6:8080/order/currentOrders?filter={%27customerID%27%20:%20%27"+customerID+"%27}";
+            urlToUse = "http://192.168.0.2:8080/order/currentOrders?filter={%27customerID%27%20:%20%27"+customerID+"%27}";
 
             try {
                 returnedJSON = APIConnection.getAPIData(urlToUse);
@@ -432,7 +442,7 @@ public class RecommendationActivity extends AppCompatActivity {
 
         // Go through each related customers previous orders that have been completed and check for orders from restaurants
         for (String customerID : relatedCustomerIds) {
-            urlToUse = "http://192.168.0.6:8080/order/orderHistory?filter={%27customerID%27%20:%20%27"+customerID+"%27}";
+            urlToUse = "http://192.168.0.2:8080/order/orderHistory?filter={%27customerID%27%20:%20%27"+customerID+"%27}";
 
             try {
                 returnedJSON = APIConnection.getAPIData(urlToUse);
@@ -483,7 +493,7 @@ public class RecommendationActivity extends AppCompatActivity {
 
             // Loop through each restaurant name in the popularRestaurants array, get the restaurant, instantiate the restaurant object and add it to an array
             for (String restaurantName : popularRestaurantsToRecommend) {
-                urlToUse = "http://192.168.0.6:8080/restaurant/restaurants/?filter={%27restaurantName%27:%20'" + restaurantName + "'}";
+                urlToUse = "http://192.168.0.2:8080/restaurant/restaurants/?filter={%27restaurantName%27:%20'" + restaurantName + "'}";
 
                 try {
                     // Run on non ui thread to get the returned JSON, parse string into correct points from HAL/JSON

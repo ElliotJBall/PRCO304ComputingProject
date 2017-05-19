@@ -26,10 +26,10 @@
                 app:showAsAction="always">
             </item>
             <item
-                android:id="@+id/viewAccount"
-                android:icon="@drawable/accounticon"
+                android:id="@+id/viewMap"
+                android:icon="@drawable/viewmap"
                 android:textColor="@color/colorWhite"
-                android:title="View Account"
+                android:title="View Map"
                 app:showAsAction="always">
             </item>
             <item

@@ -16,11 +16,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
+import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
 import com.example.elliot.automatedorderingsystem.Login.LoginActivity;
+import com.example.elliot.automatedorderingsystem.MapsActivity;
 import com.example.elliot.automatedorderingsystem.OrderHistory.OrderHistoryActivity;
 import com.example.elliot.automatedorderingsystem.R;
 import com.example.elliot.automatedorderingsystem.Recommendation.RecommendationActivity;
@@ -125,7 +128,13 @@ public class BasketActivity extends AppCompatActivity implements View.OnClickLis
                 startActivity(new Intent(BasketActivity.this, MainActivity.class));
                 break;
             case R.id.signOut:
+                Customer.getInstance().setUsername(null);
+                Order newOrder = new Order();
+                Customer.getInstance().setUserOrder(newOrder);
                 startActivity(new Intent(BasketActivity.this, LoginActivity.class));
+                break;
+            case R.id.viewMap:
+                startActivity(new Intent(BasketActivity.this, MapsActivity.class));
                 break;
             default:
                 break;
@@ -148,11 +157,16 @@ public class BasketActivity extends AppCompatActivity implements View.OnClickLis
         // Switch for all the possible button options that can be clicked
         switch (v.getId()){
             case R.id.btnCheckout:
-                // Disable the previous elements
-                disableBasketElements();
-                // Display the fragment with the user details on
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, new BasketCheckoutDetailsFragment()).commit();
+                if (Customer.getInstance().getUserId() != null) {
+                    // Disable the previous elements
+                    disableBasketElements();
+                    // Display the fragment with the user details on
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, new BasketCheckoutDetailsFragment()).commit();
+                } else {
+                    Toast.makeText(this, "Please make sure you're logged in and try again.", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             default:
                 break;

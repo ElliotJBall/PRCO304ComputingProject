@@ -20,6 +20,7 @@ import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
 import com.example.elliot.automatedorderingsystem.Login.LoginActivity;
+import com.example.elliot.automatedorderingsystem.MapsActivity;
 import com.example.elliot.automatedorderingsystem.R;
 import com.example.elliot.automatedorderingsystem.Recommendation.RecommendationActivity;
 import com.example.elliot.automatedorderingsystem.RestaurantAndMenu.MainActivity;
@@ -112,7 +113,13 @@ public class OrderHistoryActivity extends AppCompatActivity {
                 startActivity(new Intent(OrderHistoryActivity.this, MainActivity.class));
                 break;
             case R.id.signOut:
+                Customer.getInstance().setUsername(null);
+                Order newOrder = new Order();
+                Customer.getInstance().setUserOrder(newOrder);
                 startActivity(new Intent(OrderHistoryActivity.this, LoginActivity.class));
+                break;
+            case R.id.viewMap:
+                startActivity(new Intent(OrderHistoryActivity.this, MapsActivity.class));
                 break;
             default:
                 break;
@@ -123,7 +130,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
     private void getCustomersOrders() throws ExecutionException, InterruptedException, JSONException {
         // Get the customer ID and add it to the URL
         String customerID = Customer.getInstance().getUserId();
-        urlToUse = "http://192.168.0.6:8080/order/currentOrders/?filter={%27customerID%27:%20'"+customerID +"'}";
+        urlToUse = "http://192.168.0.2:8080/order/currentOrders/?filter={%27customerID%27:%20'"+customerID +"'}";
         // Create the asyncTask and GET the required data - then cancel after its completed to stop the asynctask
         asyncGetData = new asyncGetData();
         asyncGetData.execute().get();
@@ -156,7 +163,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
             // Now attempt to get the data from the previousOrders collection
             // Return the JSON string to "" to ensure it doesnt use the previous data
             returnedJSON = "";
-            urlToUse = "http://192.168.0.6:8080/order/orderHistory/?filter={%27customerID%27:%20'"+customerID +"'}";
+            urlToUse = "http://192.168.0.2:8080/order/orderHistory/?filter={%27customerID%27:%20'"+customerID +"'}";
             // Create the asyncTask and GET the required data - then cancel after its completed to stop the asynctask
             asyncGetData = new asyncGetData();
             asyncGetData.execute().get();

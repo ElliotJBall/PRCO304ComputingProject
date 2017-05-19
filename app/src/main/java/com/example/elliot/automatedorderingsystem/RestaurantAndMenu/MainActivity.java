@@ -30,8 +30,10 @@ import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
+import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
 import com.example.elliot.automatedorderingsystem.Login.LoginActivity;
+import com.example.elliot.automatedorderingsystem.MapsActivity;
 import com.example.elliot.automatedorderingsystem.OrderHistory.OrderHistoryActivity;
 import com.example.elliot.automatedorderingsystem.R;
 import com.example.elliot.automatedorderingsystem.Recommendation.RecommendationActivity;
@@ -40,7 +42,6 @@ import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,6 +74,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // If not a guest then add their username to the menu
+        if (Customer.getInstance().getUsername() != null) {
+            getSupportActionBar().setTitle("Welcome: " + Customer.getInstance().getUsername());
+        }
 
         // Check for user permissions - This must be done for later versions of android devices - application functionality is serverly hampered without the permisions
         boolean canContinue = checkForPermissions();
@@ -129,8 +135,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 startActivity(new Intent(MainActivity.this, MainActivity.class));
                 break;
             case R.id.signOut:
+                Customer.getInstance().setUsername(null);
+                Order newOrder = new Order();
+                Customer.getInstance().setUserOrder(newOrder);
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 break;
+                case R.id.viewMap:
+                    startActivity(new Intent(MainActivity.this, MapsActivity.class));
+                    break;
             default:
                 break;
         }
@@ -234,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void getAllRestaurants() throws JSONException, ExecutionException, InterruptedException, ParseException {
-        urlToUse = "http://192.168.0.6:8080/restaurant/restaurants";
+        urlToUse = "http://192.168.0.2:8080/restaurant/restaurants";
         asyncGetData = new asyncGetData();
         asyncGetData.execute().get();
 
@@ -445,9 +457,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     public class asyncGetData extends AsyncTask<Object, Object, String> {
+        // Grab the JSON data from the API on an async task
+        // Not allowed to run on Main thread so grab data in the background
         @Override
         protected String doInBackground(Object... params) {
-            Looper.prepare();
+            if (Looper.myLooper() == null) {
+                Looper.prepare();
+            }
             try {
                 Thread.sleep(1000);
                 returnedJSON = APIConnection.getAPIData(urlToUse);

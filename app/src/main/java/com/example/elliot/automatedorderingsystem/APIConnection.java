@@ -1,6 +1,8 @@
 package com.example.elliot.automatedorderingsystem;
 
 
+import android.widget.Toast;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,12 +50,8 @@ public class APIConnection implements Runnable {
         // Get the JSON string and cut out the uneeded stuff added by RESTHEART (Find more efficient way!)
         String stringJSON = sb.toString();
 
-        // MAY NEED UNCOMMENTING - CURRENTLY WEIRD WORKAROUND TO HAL/JSON
-        // String requiredString = stringJSON.substring(stringJSON.indexOf("[") , sb.indexOf("]") +1);
-
         request.disconnect();
         return stringJSON;
-
     }
 
     public int postAPIData(String urlToUse, JSONObject objectToInsert) throws IOException {
@@ -126,12 +124,8 @@ public class APIConnection implements Runnable {
     public void run() {
         try {
             getAPIData(connection);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            // Unexpected error, tell user to check permissions and try again later
         }
     }
 }

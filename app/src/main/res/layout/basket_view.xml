@@ -36,8 +36,8 @@
         android:text="Food Price"
         android:textStyle="bold"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/txtFoodName"
-        android:layout_marginStart="12dp" />
+        android:layout_toStartOf="@+id/imgDeleteFood"
+        android:layout_marginEnd="10dp" />
 
     <ImageView
         android:id="@+id/imgDeleteFood"

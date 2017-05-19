@@ -99,13 +99,12 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
             case R.id.btnPurchaseOrder:
                 // Boolean to use when checking the editText boxes
                 boolean canContinue = checkEditTextBoxes();
-
                 // Check if canContinue is true - means there is data in the textBoxes and order can be placed
                 if (canContinue == true) {
                     try {
                         // Insert the order into the database using information from the customer and order object
                         // Make use of the APIConnection class which holds the POST method
-                        insertOrder();
+                            insertOrder();
                     } catch (Exception e) {
                         Toast.makeText(getContext(), "Error placing order. Please try again.", Toast.LENGTH_SHORT).show();
                     }
@@ -174,14 +173,14 @@ public class BasketCheckoutDetailsFragment extends Fragment implements View.OnCl
         String order = new Gson().toJson(Customer.getInstance().getUserOrder());
 
         // Set the URL to the currentOrders database
-        urlToUse = "http://192.168.0.6:8080/order/currentOrders/";
+        urlToUse = "http://192.168.0.2:8080/order/currentOrders/";
 
         // Create the JSON object and put required fields
         objectToUse = new JSONObject();
         objectToUse.put("_id", orderID.toString());
 
         // Check if customer ID is null - if it is generate an ID for them
-        if (Customer.getInstance().getUserId().equals("")) {
+        if (Customer.getInstance().getUserId() == null) {
             ObjectId customerID = ObjectId.get();
         } else {
             objectToUse.put("customerID", Customer.getInstance().getUserId());

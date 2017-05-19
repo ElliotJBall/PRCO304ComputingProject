@@ -18,6 +18,7 @@ import com.example.elliot.automatedorderingsystem.APIConnection;
 import com.example.elliot.automatedorderingsystem.Basket.BasketActivity;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Customer;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Food;
+import com.example.elliot.automatedorderingsystem.ClassLibrary.Order;
 import com.example.elliot.automatedorderingsystem.ClassLibrary.Restaurant;
 import com.example.elliot.automatedorderingsystem.Login.LoginActivity;
 import com.example.elliot.automatedorderingsystem.OrderHistory.OrderHistoryActivity;
@@ -105,6 +106,9 @@ public class RestaurantActivity extends AppCompatActivity {
                 startActivity(new Intent(RestaurantActivity.this, MainActivity.class));
                 break;
             case R.id.signOut:
+                Customer.getInstance().setUsername(null);
+                Order newOrder = new Order();
+                Customer.getInstance().setUserOrder(newOrder);
                 startActivity(new Intent(RestaurantActivity.this, LoginActivity.class));
                 break;
         }
@@ -116,7 +120,7 @@ public class RestaurantActivity extends AppCompatActivity {
         // Gets all food which matches the menuID
         // Add the required spacing for the api to work (change white space to %20)
         String restaurantName = restaurant.getRestaurantName().replaceAll(" ", "%20");
-        urlToUse = "http://192.168.0.6:8080/food/food/?filter={%27restaurantName%27:%20'"+restaurantName+"'}";
+        urlToUse = "http://192.168.0.2:8080/food/food/?filter={%27restaurantName%27:%20'"+restaurantName+"'}";
 
         asyncGetData = new asyncGetData();
         asyncGetData.execute().get();
