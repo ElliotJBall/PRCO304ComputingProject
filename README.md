@@ -7,6 +7,5 @@ This is my Final year project for Plymouth University. The aim of the project wa
 
 • MongoDB
 
-### Class Diagram:
 
 
